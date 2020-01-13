@@ -1,0 +1,11 @@
+/Debug
+/pacman/pacman.vcxproj
+/pacman/pacman.vcxproj.filters
+/pacman/pacman.vcxproj.user
+/pacman/Debug
+/pacman/Release
+/.vs
+/pacman.sln
+/Release/pacman.iobj
+/Release/pacman.ipdb
+/Release/pacman.pdb
