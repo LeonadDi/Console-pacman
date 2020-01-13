@@ -13,12 +13,16 @@ public:
 	Stats* stats;
 	Settings* settings;
 	MovableObject* player;
+	MovableObject* ghost1; //заплатка
 
 
 	void gameLoop();
-	//update
+	
 	void update();
-	//render
+	
 	void render();
+
+	void levelSplashScreen();
+	void levelFinishedScreen();
 };
 

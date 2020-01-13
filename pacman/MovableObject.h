@@ -14,7 +14,7 @@ public:
 		up
 	};
 	World* world;
-	char sprite;
+	char sprite[3] = {};
 	int position[2];
 	bool visible;
 	int ticksCooldown = 0;
@@ -23,11 +23,12 @@ public:
 	
 
 
-	MovableObject(World* world, char sprite, bool visible, int x, int y);
+	MovableObject(World* world, bool visible, int x, int y);
 
-	virtual char getForRender();
+	virtual char getCurrentSprite();
 	virtual void getControl();
 	virtual void update();
+	void checkForTunnel();
 
 	
 };

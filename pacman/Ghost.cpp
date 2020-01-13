@@ -1,20 +1,22 @@
-#include "Player.h"
+#include "Ghost.h"
 
-Player::Player(World* world, bool visible, int x, int y, Stats* stats)
+Ghost::Ghost(World* world, bool visible, int x, int y, Stats* stats, MovableObject* player)
 	:MovableObject(world, visible, x, y)
 {
 	this->stats = stats;
 	ticksCooldown = 15;
 	cooldownCurrent = 0;
-	sprite[0] = 'O';
-	sprite[1] = 'o';
+	sprite[0] = 'G';
+	sprite[1] = 'g';
+	sprite[2] = ':';
+	this->player = player;
+	moveDirection = movement::left;
 }
 
-void Player::update()
+void Ghost::update()
 {
-	//get input
-	getControl();	//сделать из этого класс
-
+	getControl();
+	catchPlayer();
 	if (cooldownCurrent >= ticksCooldown)
 	{
 		movement();
@@ -22,15 +24,11 @@ void Player::update()
 	cooldownCurrent++;
 }
 
-void Player::getControl()
+void Ghost::getControl()
 {
-	if (GetAsyncKeyState(37) || GetAsyncKeyState(0x41)) moveDirection = movement::left;
-	if (GetAsyncKeyState(38) || GetAsyncKeyState(0x57)) moveDirection = movement::up;
-	if (GetAsyncKeyState(39) || GetAsyncKeyState(0x44)) moveDirection = movement::right;
-	if (GetAsyncKeyState(40) || GetAsyncKeyState(0x53)) moveDirection = movement::down;
 }
 
-void Player::movement()
+void Ghost::movement()
 {
 	char* q = 0;
 	switch (moveDirection)
@@ -59,92 +57,85 @@ void Player::movement()
 	}
 }
 
-void Player::eatDots(char *q)
+char Ghost::getCurrentSprite()
 {
-	if (*q == '2')
-	{
-		*q = '0';
-		stats->dotCollected();
-	}
+	return sprite[0];
 }
 
-void Player::moveRight(char* q)
+void Ghost::moveRight(char* q)
 {
 	q = &(world->map[(position[1] * map_width) + (position[0] + 1)]);
 	if (*q == '1')
 	{
 		moveDirection = movement::stop;
+		moveDirection = movement::up;//ssda
 	}
 	else
 	{
-		eatDots(q);
+		//eatDots(q);
 		position[0] += 1;
 		checkForTunnel();
 		cooldownCurrent = 0;
 	}
 }
 
-void Player::moveLeft(char* q)
+void Ghost::moveLeft(char* q)
 {
 	q = &(world->map[(position[1] * map_width) + (position[0] - 1)]);
 	if (*q == '1')
 	{
 		moveDirection = movement::stop;
+		moveDirection = movement::down;//ssda
 	}
 	else
 	{
-		eatDots(q);
+		//eatDots(q);
 		position[0] -= 1;
 		checkForTunnel();
 		cooldownCurrent = 0;
 	}
 }
 
-void Player::moveUp(char* q)
+void Ghost::moveUp(char* q)
 {
 	q = &(world->map[((position[1] - 1) * map_width) + (position[0])]);
 	if (*q == '1')
 	{
 		moveDirection = movement::stop;
+		moveDirection = movement::left;//ssda
 	}
 	else
 	{
-		eatDots(q);
+		//eatDots(q);
 		position[1] -= 1;
 		checkForTunnel();
 		cooldownCurrent = 0;
 	}
 }
 
-void Player::moveDown(char* q)
+void Ghost::moveDown(char* q)
 {
 	q = &(world->map[((position[1] + 1) * map_width) + (position[0])]);
 	if (*q == '1')
 	{
 		moveDirection = movement::stop;
+		moveDirection = movement::right;//ssda
 	}
 	else
 	{
-		eatDots(q);
+		//eatDots(q);
 		position[1] += 1;
 		checkForTunnel();
 		cooldownCurrent = 0;
 	}
 }
 
-/*void Player::checkForTunnel()
+void Ghost::catchPlayer()
 {
-	if (position[0] == 0 && position[1]==14)
+	if (position[0] == player->position[0] && position[1] == player->position[1])
 	{
-		position[0] = 26;
+		stats->health -= 1;
 	}
-	if (position[0] == 27 && position[1] == 14)
-	{
-		position[0] = 1;
-	}
-}*/
-
-char Player::getCurrentSprite() {
-	int e = stats->dotsCollected % 2;
-	return sprite[e];
 }
+
+
