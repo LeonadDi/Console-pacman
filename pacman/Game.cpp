@@ -18,20 +18,36 @@ void Game::gameLoop()
 
 		levelSplashScreen();
 
-		while (stats->dotsCollected < 246) {	//later change to 246
+		while (stats->dotsCollected < 246 && !stats->gotHit) {
 			update();
 			render();
 			Sleep(1000 / 60);
 		}
-		//повышение уровня
-			//потом сделать методом
-		levelFinishedScreen();
-		stats->level++;
-		stats->dotsCollected = 0;
-		world->loadMap();
-		player->position[0] = 13;
-		player->position[1] = 23;
-		player->moveDirection = MovableObject::movement::stop;
+		
+		if (!stats->gotHit)
+		{
+			levelFinishedScreen();
+			stats->level++;
+			stats->dotsCollected = 0;
+			world->loadMap();
+			player->position[0] = 13;
+			player->position[1] = 23;
+			player->moveDirection = MovableObject::movement::stop;
+		}
+		else {
+			if (stats->health <=0)
+			{
+				loseSplashScreen();
+				break;
+			}
+			gotHitSplashScreen();
+			stats->gotHit = false;
+			player->position[0] = 13;
+			player->position[1] = 23;
+			ghost1->position[0] = 1;
+			ghost1->position[1] = 1;
+			player->moveDirection = MovableObject::movement::stop;
+		}
 	}
 }
 
@@ -117,6 +133,37 @@ void Game::levelSplashScreen()
 	char levelF[14] = { "Level: " };
 	for (int i = 0; i < 6; i++) screen[14 + i + 18 * screen_width] = (char)levelF[i];
 	for (int i = 0; i < 6; i++) screen[21 + i + 18 * screen_width] = (char)level[i];
+	HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
+	DWORD dwBytesWritten = 0;
+	WriteConsoleOutputCharacter(h, screen, screen_height * screen_width, { 0,0 }, &dwBytesWritten);
+
+	Sleep(3000);
+}
+
+void Game::gotHitSplashScreen()
+{
+	Sleep(1000);
+	wchar_t rqre[screen_width * screen_height];
+	wchar_t* screen = rqre;
+	for (int i = 0; i < screen_width * screen_height; i++) screen[i] = L' ';
+	char gotHitF[21] = { "You have been caught" };
+	for (int i = 0; i < 21; i++) screen[10 + i + 18 * screen_width] = (char)gotHitF[i];
+
+	HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
+	DWORD dwBytesWritten = 0;
+	WriteConsoleOutputCharacter(h, screen, screen_height * screen_width, { 0,0 }, &dwBytesWritten);
+
+	Sleep(3000);
+}
+
+void Game::loseSplashScreen()
+{
+	wchar_t rqre[screen_width * screen_height];
+	wchar_t* screen = rqre;
+	for (int i = 0; i < screen_width * screen_height; i++) screen[i] = L' ';
+	char gameOverF[10] = { "Game over" };
+	for (int i = 0; i < 10; i++) screen[10 + i + 18 * screen_width] = (char)gameOverF[i];
+
 	HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
 	DWORD dwBytesWritten = 0;
 	WriteConsoleOutputCharacter(h, screen, screen_height * screen_width, { 0,0 }, &dwBytesWritten);

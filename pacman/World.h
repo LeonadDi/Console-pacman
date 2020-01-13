@@ -10,7 +10,6 @@ public:
 
 	char* getMapForRender();
 
-	void generateMap();
 	void loadMap();
 
 	

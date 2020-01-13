@@ -6,6 +6,7 @@ public:
 	int score = 0;
 	int level = 1;
 	int health = 3;
+	bool gotHit = false;
 
 	void dotCollected();
 };

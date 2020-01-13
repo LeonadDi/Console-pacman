@@ -2,41 +2,32 @@
 #include "Settings.h"
 World::World()
 {
-	//map = new char[map_height * map_width]{};
-	//generateMap();
-	loadMap();
-	
+	loadMap();	
 }
-
-
 
 char* World::getMapForRender()
 {
 	char* name = new char[map_height * map_width];
 	for (int i = 0; i < map_height * map_width; i++)
 	{
-		name[i] = (map[i] == '0') ? ' ': (map[i]=='1')? '#' : '.' ;
-	}
-
-	return name;
-}
-
-void World::generateMap()
-{
-	for (char i = 0; i < map_height; i++)
-	{
-		for (char j = 0; j < map_width; j++)
+		switch (map[i])
 		{
-			map[i * map_height + j] = rand() % 3 + 48;
-
+		case '0':
+			name[i] = ' ';
+			break;
+		case '1':
+			name[i] = '#';
+			break;
+		case '2':
+			name[i] = '.';
+			break;
 		}
 	}
+	return name;
 }
 
 void World::loadMap()
 {
-	//14
-	//14
 	map = new char[map_height*map_width+1]
 	{ 
 		"11111111111111""11111111111111"

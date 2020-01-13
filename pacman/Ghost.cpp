@@ -134,7 +134,11 @@ void Ghost::catchPlayer()
 {
 	if (position[0] == player->position[0] && position[1] == player->position[1])
 	{
-		stats->health -= 1;
+		if (!stats->gotHit)
+		{
+			stats->health -= 1;
+			stats->gotHit = true;
+		}
 	}
 }
 

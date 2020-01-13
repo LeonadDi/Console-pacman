@@ -23,6 +23,8 @@ public:
 	void render();
 
 	void levelSplashScreen();
+	void gotHitSplashScreen();
+	void loseSplashScreen();
 	void levelFinishedScreen();
 };
 
