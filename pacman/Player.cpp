@@ -13,7 +13,7 @@ Player::Player(World* world, bool visible, int x, int y, Stats* stats)
 void Player::update()
 {
 	//get input
-	getControl();	//сделать из этого класс
+	//getControl();	//сделать из этого класс
 
 	if (cooldownCurrent >= ticksCooldown)
 	{
@@ -24,11 +24,51 @@ void Player::update()
 
 void Player::getControl()
 {
-	if (GetAsyncKeyState(37) || GetAsyncKeyState(0x41)) moveDirection = movement::left;
-	if (GetAsyncKeyState(38) || GetAsyncKeyState(0x57)) moveDirection = movement::up;
-	if (GetAsyncKeyState(39) || GetAsyncKeyState(0x44)) moveDirection = movement::right;
-	if (GetAsyncKeyState(40) || GetAsyncKeyState(0x53)) moveDirection = movement::down;
+	if (GetAsyncKeyState(LEFT_ARROW_KEY) || GetAsyncKeyState(A_KEY)) 
+	{ 
+		if (stats->pause)
+		{
+			stats->pause = false;
+		}
+		moveDirection = movement::left;
+	}
+	if (GetAsyncKeyState(UP_ARROW_KEY) || GetAsyncKeyState(W_KEY))
+	{
+		if (stats->pause)
+		{
+			stats->pause = false;
+		}
+		moveDirection = movement::up;
+	}
+	if (GetAsyncKeyState(RIGHT_ARROW_KEY) || GetAsyncKeyState(D_KEY))
+	{
+		if (stats->pause)
+		{
+			stats->pause = false;
+		}
+		moveDirection = movement::right;
+	}
+	if (GetAsyncKeyState(DOWN_ARROW_KEY) || GetAsyncKeyState(S_KEY)) 
+	{
+		if (stats->pause)
+		{
+			stats->pause = false;
+		}
+		moveDirection = movement::down;
+	}
+	if (GetAsyncKeyState(SPACE_KEY))
+	{
+		if (stats->pause)
+		{
+			stats->pause = false;
+		}
+		else
+		{
+			stats->pause = true;
+		}
+	}
 }
+
 
 void Player::movement()
 {
@@ -65,6 +105,11 @@ void Player::eatDots(char *q)
 	{
 		*q = '0';
 		stats->dotCollected();
+	}
+	if (*q == '3')
+	{
+		*q = '0';
+		stats->powerupCollected();
 	}
 }
 

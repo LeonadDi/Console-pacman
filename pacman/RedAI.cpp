@@ -11,8 +11,26 @@ RedAI::RedAI(World* world, MovableObject* ghost, MovableObject* target)
 
 void RedAI::makeDecision()
 {
-	targetCoord[0] = target->position[0];
-	targetCoord[1] = target->position[1];
-	navigateToTarget(targetCoord[0], targetCoord[1]);
+	switch (currentAi)
+	{
+	case AiMode::idle:
+		break;
+	case AiMode::pursuit:
+		targetCoord[0] = target->position[0];
+		targetCoord[1] = target->position[1];
+		navigateToTarget(targetCoord[0], targetCoord[1]);
+		break;
+	case AiMode::scatter:
+		scatter();
+		break;
+	case AiMode::fright:
+		fright();
+		break;
+	case AiMode::eaten:
+		eaten();
+		break;
+	default:
+		break;
+	}
 	
 }

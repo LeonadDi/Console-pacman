@@ -1,5 +1,4 @@
 #pragma once
-
 class Stats
 {
 public:
@@ -8,9 +7,10 @@ public:
 	int level = 1;
 	int health = 3;
 	bool gotHit = false;
-
-	
+	bool fright = false;
+	bool pause = true;
 
 	void dotCollected();
+	void powerupCollected();
 };
 

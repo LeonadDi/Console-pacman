@@ -7,5 +7,8 @@ public:
 	PinkAI(World* world, MovableObject* ghost, MovableObject* target);
 
 	void makeDecision();
+
+private:
+	void pursuit();
 };
 

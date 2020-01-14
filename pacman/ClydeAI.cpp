@@ -9,6 +9,33 @@ ClydeAI::ClydeAI(World* world, MovableObject* ghost, MovableObject* target)
 
 void ClydeAI::makeDecision()
 {
+	switch (currentAi)
+	{
+	case AiMode::idle:
+		break;
+	case AiMode::pursuit:
+		pursuit();
+		break;
+	case AiMode::scatter:
+		scatter();
+		break;
+	case AiMode::fright:
+		fright();
+		break;
+	case AiMode::eaten:
+		eaten();
+		break;
+	default:
+		break;
+	}
+
+
+
+	
+}
+
+void ClydeAI::pursuit()
+{
 	double distance = distanceToTarget(host->position[0], host->position[1], target->position[0], target->position[1]);
 	if (distance >= 8)
 	{

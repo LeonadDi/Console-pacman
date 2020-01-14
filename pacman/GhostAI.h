@@ -8,6 +8,16 @@ public:
 
 	virtual void makeDecision();
 
+	enum class AiMode {
+		idle,
+		pursuit,
+		scatter,
+		fright,
+		eaten
+	};
+	
+	AiMode currentAi = AiMode::pursuit;
+
 protected:
 
 	int targetCoord[2]{ 0,0 };
@@ -19,6 +29,8 @@ protected:
 
 	void navigateToTarget(int targetX, int targetY);
 	void scatter();
+	void fright();
+	void eaten();
 	double distanceToTarget(int currentX, int currentY, int targetX, int targetY);
 };
 

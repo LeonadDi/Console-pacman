@@ -7,22 +7,25 @@ Ghost::Ghost(World* world, bool visible, int x, int y, Stats* stats, MovableObje
 	ticksCooldown = 18;
 	cooldownCurrent = 0;
 	
-	sprite[1] = 'g';
-	sprite[2] = ':';
+	
+	sprite[2] = '-';
 	this->player = player;
 	switch (AI)
 	{
 	case 0:
 		ai = new RedAI(world, this, player);
 		sprite[0] = 'R';
+		sprite[1] = 'r';
 		break;
 	case 1:
 		ai = new PinkAI(world, this, player);
 		sprite[0] = 'P';
+		sprite[1] = 'p';
 		break;
 	case 2:
 		ai = new ClydeAI(world, this, player);
 		sprite[0] = 'K';
+		sprite[1] = 'k';
 		break;
 	default:
 		break;
@@ -33,13 +36,54 @@ Ghost::Ghost(World* world, bool visible, int x, int y, Stats* stats, MovableObje
 
 void Ghost::update()
 {
+	setFright();
+	if (ai->currentAi == GhostAI::AiMode::fright)
+	{
+		updateFright();		
+	}
 	getControl();
 	catchPlayer();
-	if (cooldownCurrent >= ticksCooldown)
+	if (cooldownCurrent >= getCurrentMoveCooldown())
 	{
 		movement();
 	}
 	cooldownCurrent++;
+}
+
+void Ghost::setFright()
+{
+	if (stats->fright && ai->currentAi != GhostAI::AiMode::eaten)
+	{
+		ai->currentAi = GhostAI::AiMode::fright;
+	}
+}
+
+void Ghost::updateFright()
+{
+	frightTicks += 1;
+	if (frightTicks>= frightTimer)
+	{
+		frightTicks = 0;
+		ai->currentAi = GhostAI::AiMode::pursuit;
+	}
+}
+
+int Ghost::getCurrentMoveCooldown()
+{
+	switch (ai->currentAi)
+	{
+	case GhostAI::AiMode::fright:
+		return ticksCooldown * 2;
+		break;
+	case GhostAI::AiMode::eaten:
+		return ticksCooldown / 2;
+		break;
+	default:
+		return ticksCooldown;
+		break;
+	}
+	
+	return 0;
 }
 
 void Ghost::getControl()
@@ -78,7 +122,18 @@ void Ghost::movement()
 
 char Ghost::getCurrentSprite()
 {
-	return sprite[0];
+	switch (ai->currentAi)
+	{
+	case GhostAI::AiMode::fright:
+		return sprite[1];
+		break;
+	case GhostAI::AiMode::eaten:
+		return sprite[2];
+		break;
+	default:
+		return sprite[0];
+		break;
+	}	
 }
 
 void Ghost::moveRight(char* q)
@@ -149,10 +204,20 @@ void Ghost::catchPlayer()
 {
 	if (position[0] == player->position[0] && position[1] == player->position[1])
 	{
-		if (!stats->gotHit)
+		if (ai->currentAi == GhostAI::AiMode::pursuit || 
+			ai->currentAi == GhostAI::AiMode::scatter)
 		{
-			stats->health -= 1;
-			stats->gotHit = true;
+			if (!stats->gotHit)
+			{
+				stats->health -= 1;
+				stats->gotHit = true;
+			}
+		}
+		else if(ai->currentAi != GhostAI::AiMode::eaten)
+		{
+			ai->currentAi = GhostAI::AiMode::eaten;
+			frightTicks = 0;
+			stats->score += 200;
 		}
 	}
 }

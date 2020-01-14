@@ -7,5 +7,7 @@ public:
 	ClydeAI(World* world, MovableObject* ghost, MovableObject* target);
 
 	void makeDecision();
+private:
+	void pursuit();
 };
 

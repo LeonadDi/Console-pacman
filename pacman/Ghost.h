@@ -4,6 +4,7 @@
 #include "RedAI.h"
 #include "PinkAI.h"
 #include "ClydeAI.h"
+#include "CyanAI.h"
 class Ghost :
 	public MovableObject
 {
@@ -12,12 +13,18 @@ public:
 
 	
 	MovableObject* player;
-	GhostAI* ai;
+	GhostAI* ai = 0;
 
 	void update();
-	void getControl();
-	void movement();
 	char getCurrentSprite();
+private:
+	int frightTimer = 60 * 10;
+	int frightTicks = 0;
+	void getControl();
+	void setFright();
+	void updateFright();
+	int getCurrentMoveCooldown();
+	void movement();
 	void moveRight(char* q);
 	void moveLeft(char* q);
 	void moveUp(char* q);
