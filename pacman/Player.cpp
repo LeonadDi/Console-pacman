@@ -30,7 +30,11 @@ void Player::getControl()
 		{
 			stats->pause = false;
 		}
-		moveDirection = movement::left;
+		char q = world->getByCoords(position[0]-1, position[1]);
+		if (q != '1')
+		{
+			tryToMove = movement::left;
+		}
 	}
 	if (GetAsyncKeyState(UP_ARROW_KEY) || GetAsyncKeyState(W_KEY))
 	{
@@ -38,7 +42,12 @@ void Player::getControl()
 		{
 			stats->pause = false;
 		}
-		moveDirection = movement::up;
+
+		char q = world->getByCoords(position[0], position[1]-1);
+		if (q!='1')
+		{
+			tryToMove = movement::up;
+		}
 	}
 	if (GetAsyncKeyState(RIGHT_ARROW_KEY) || GetAsyncKeyState(D_KEY))
 	{
@@ -46,7 +55,14 @@ void Player::getControl()
 		{
 			stats->pause = false;
 		}
-		moveDirection = movement::right;
+
+		char q = world->getByCoords(position[0]+1, position[1]);
+		
+		if (q != '1')
+		{
+			tryToMove = movement::right;
+		}
+		
 	}
 	if (GetAsyncKeyState(DOWN_ARROW_KEY) || GetAsyncKeyState(S_KEY)) 
 	{
@@ -54,7 +70,11 @@ void Player::getControl()
 		{
 			stats->pause = false;
 		}
-		moveDirection = movement::down;
+		char q = world->getByCoords(position[0], position[1]+1);
+		if (q != '1')
+		{
+			tryToMove = movement::down;
+		}
 	}
 	if (GetAsyncKeyState(SPACE_KEY))
 	{
@@ -73,7 +93,7 @@ void Player::getControl()
 void Player::movement()
 {
 	char* q = 0;
-	switch (moveDirection)
+	switch (tryToMove)
 	{
 	case movement::stop:
 		break;
