@@ -1,16 +1,34 @@
 #include "Ghost.h"
 
-Ghost::Ghost(World* world, bool visible, int x, int y, Stats* stats, MovableObject* player)
+Ghost::Ghost(World* world, bool visible, int x, int y, Stats* stats, MovableObject* player, int AI)
 	:MovableObject(world, visible, x, y)
 {
 	this->stats = stats;
-	ticksCooldown = 15;
+	ticksCooldown = 18;
 	cooldownCurrent = 0;
-	sprite[0] = 'G';
+	
 	sprite[1] = 'g';
 	sprite[2] = ':';
 	this->player = player;
-	moveDirection = movement::left;
+	switch (AI)
+	{
+	case 0:
+		ai = new RedAI(world, this, player);
+		sprite[0] = 'R';
+		break;
+	case 1:
+		ai = new PinkAI(world, this, player);
+		sprite[0] = 'P';
+		break;
+	case 2:
+		ai = new ClydeAI(world, this, player);
+		sprite[0] = 'K';
+		break;
+	default:
+		break;
+	}
+	
+
 }
 
 void Ghost::update()
@@ -26,6 +44,7 @@ void Ghost::update()
 
 void Ghost::getControl()
 {
+	ai->makeDecision();
 }
 
 void Ghost::movement()
@@ -68,11 +87,10 @@ void Ghost::moveRight(char* q)
 	if (*q == '1')
 	{
 		moveDirection = movement::stop;
-		moveDirection = movement::up;//ssda
 	}
 	else
-	{
-		//eatDots(q);
+	{		
+		lastPositionDirection = movement::left;
 		position[0] += 1;
 		checkForTunnel();
 		cooldownCurrent = 0;
@@ -85,11 +103,10 @@ void Ghost::moveLeft(char* q)
 	if (*q == '1')
 	{
 		moveDirection = movement::stop;
-		moveDirection = movement::down;//ssda
 	}
 	else
 	{
-		//eatDots(q);
+		lastPositionDirection = movement::right;
 		position[0] -= 1;
 		checkForTunnel();
 		cooldownCurrent = 0;
@@ -102,11 +119,10 @@ void Ghost::moveUp(char* q)
 	if (*q == '1')
 	{
 		moveDirection = movement::stop;
-		moveDirection = movement::left;//ssda
 	}
 	else
 	{
-		//eatDots(q);
+		lastPositionDirection = movement::down;
 		position[1] -= 1;
 		checkForTunnel();
 		cooldownCurrent = 0;
@@ -119,11 +135,10 @@ void Ghost::moveDown(char* q)
 	if (*q == '1')
 	{
 		moveDirection = movement::stop;
-		moveDirection = movement::right;//ssda
 	}
 	else
 	{
-		//eatDots(q);
+		lastPositionDirection = movement::up;
 		position[1] += 1;
 		checkForTunnel();
 		cooldownCurrent = 0;

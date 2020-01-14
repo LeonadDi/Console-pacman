@@ -1,15 +1,18 @@
 #pragma once
 #include "MovableObject.h"
-#include "Stats.h"
 #include "Player.h"
+#include "RedAI.h"
+#include "PinkAI.h"
+#include "ClydeAI.h"
 class Ghost :
 	public MovableObject
 {
 public:
-	Ghost(World* world, bool visible, int x, int y, Stats* stats, MovableObject* player);
+	Ghost(World* world, bool visible, int x, int y, Stats* stats, MovableObject* player, int AI);
 
-	Stats* stats;
+	
 	MovableObject* player;
+	GhostAI* ai;
 
 	void update();
 	void getControl();

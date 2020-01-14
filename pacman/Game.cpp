@@ -9,7 +9,9 @@ Game::Game(Settings* settings)
 	world = new World();
 	stats = new Stats();
 	player = new Player(world, true,13,23, stats);
-	ghost1 = new Ghost(world, true, 1, 1, stats, player);
+	ghost1 = new Ghost(world, true, 1, 1, stats, player, 0);
+	ghost2 = new Ghost(world, true, 2, 1, stats, player, 1);
+	ghost3 = new Ghost(world, true, 3, 1, stats, player, 2);
 }
 
 void Game::gameLoop()
@@ -55,6 +57,8 @@ void Game::update()
 {
 	player->update();
 	ghost1->update();
+	ghost2->update();
+	ghost3->update();
 }
 
 void Game::render()
@@ -76,6 +80,8 @@ void Game::render()
 	q[player->position[0] + (player->position[1] * map_width)] = player->getCurrentSprite();
 	//prepare enemies
 	q[ghost1->position[0] + (ghost1->position[1] * map_width)] = ghost1->getCurrentSprite();
+	q[ghost2->position[0] + (ghost2->position[1] * map_width)] = ghost2->getCurrentSprite();
+	q[ghost3->position[0] + (ghost3->position[1] * map_width)] = ghost3->getCurrentSprite();
 	//print map on to screen
 	for (int i = 0; i < map_height; i++)
 	{

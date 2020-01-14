@@ -64,4 +64,9 @@ void World::loadMap()
 	};
 }
 
+char World::getByCoords(int x, int y)
+{
+	return map[x + y * map_width];	
+}
+
 

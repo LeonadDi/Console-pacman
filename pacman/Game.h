@@ -14,6 +14,8 @@ public:
 	Settings* settings;
 	MovableObject* player;
 	MovableObject* ghost1; //заплатка
+	MovableObject* ghost2; //заплатка
+	MovableObject* ghost3; //заплатка
 
 
 	void gameLoop();
