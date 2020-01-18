@@ -1,4 +1,5 @@
-#pragma once
+#ifndef MOVABLEOBJECT_H
+#define MOVABLEOBJECT_H
 #include "World.h"
 #include "Settings.h"
 #include "Stats.h"
@@ -23,16 +24,17 @@ public:
 	int ticksCooldown = 0;
 	int cooldownCurrent = 0;
 	movement moveDirection = movement::stop;
+	WORD color;
 	
 
 
 	MovableObject(World* world, bool visible, int x, int y);
 
 	virtual char getCurrentSprite();
+	virtual WORD getColor();
 	virtual void getControl();
 	virtual void update();
 	void checkForTunnel();
-
 	
 };
-
+#endif

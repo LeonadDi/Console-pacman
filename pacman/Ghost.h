@@ -1,10 +1,11 @@
-#pragma once
+#ifndef GHOST_H
+#define GHOST_H
 #include "MovableObject.h"
 #include "Player.h"
-#include "RedAI.h"
-#include "PinkAI.h"
-#include "ClydeAI.h"
-#include "CyanAI.h"
+#include "AiModules/RedAI.h"
+#include "AiModules/PinkAI.h"
+#include "AiModules/ClydeAI.h"
+#include "AiModules/CyanAI.h"
 class Ghost :
 	public MovableObject
 {
@@ -30,5 +31,8 @@ private:
 	void moveUp(char* q);
 	void moveDown(char* q);
 	void catchPlayer();
+
+	WORD getColor();
 };
 
+#endif

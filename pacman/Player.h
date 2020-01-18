@@ -1,4 +1,5 @@
-#pragma once
+#ifndef PLAYER_H
+#define PLAYER_H
 #include "MovableObject.h"
 
 class Player :
@@ -6,8 +7,6 @@ class Player :
 {
 public:
 	Player(World* world, bool visible, int x, int y, Stats* stats);
-
-	//Stats* stats;
 
 	void update();
 	char getCurrentSprite();
@@ -25,6 +24,11 @@ private:
 
 	movement tryToMove;
 
+	void rightButtonInput();
+	void leftButtonInput();
+	void upButtonInput();
+	void downButtonInput();
+	void spaceButtonInput();
 	void movement();
 	void getControl();
 	void eatDots(char* q);
@@ -32,5 +36,8 @@ private:
 	void moveLeft(char* q);
 	void moveUp(char* q);
 	void moveDown(char* q);
+	WORD getColor();
+
 };
 
+#endif

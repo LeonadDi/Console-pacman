@@ -31,9 +31,10 @@ void CyanAI::makeDecision()
 
 void CyanAI::pursuit()
 {
-	int x = (target2->position[0] - target->position[0]) * -2;
+	const int multyplier = -2;
+	int x = (target2->position[0] - target->position[0]) * multyplier;
 	targetCoord[0] = target2->position[0] + x;
-	int y = (target2->position[1] - target->position[1]) * -2;
+	int y = (target2->position[1] - target->position[1]) * multyplier;
 	targetCoord[1] = target2->position[0] + y;
 	
 	navigateToTarget(targetCoord[0], targetCoord[1]);

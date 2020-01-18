@@ -14,9 +14,17 @@ char MovableObject::getCurrentSprite()
 	return 'P';
 }
 
+WORD MovableObject::getColor()
+{
+	return 0;
+}
+
 void MovableObject::getControl()
 {
 }
+
+
+
 
 void MovableObject::update()
 {
@@ -24,13 +32,19 @@ void MovableObject::update()
 
 void MovableObject::checkForTunnel()
 {
-	if (position[0] == 0 && position[1] == 14)
+	const int firstTunnelY = 0;
+	const int firstTunnelXBegin = 14;
+	const int firstTunnelXEnd = 26;
+	const int secondTunnelY = 27;
+	const int secondTunnelXBegin = 14;
+	const int secondTunnelXEnd = 1;
+	if (position[0] == firstTunnelY && position[1] == firstTunnelXBegin)
 	{
-		position[0] = 26;
+		position[0] = firstTunnelXEnd;
 	}
-	if (position[0] == 27 && position[1] == 14)
+	if (position[0] == secondTunnelY && position[1] == secondTunnelXBegin)
 	{
-		position[0] = 1;
+		position[0] = secondTunnelXEnd;
 	}
 }
 

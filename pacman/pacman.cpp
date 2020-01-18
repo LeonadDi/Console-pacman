@@ -16,10 +16,6 @@ int main()
     Rect.Right = screen_width-1;
     SetConsoleWindowInfo(Handle, TRUE, &Rect);
     SetConsoleScreenBufferSize(Handle, { screen_width, screen_height });
-
-    /*CONSOLE_SCREEN_BUFFER_INFO  q;
-    GetConsoleScreenBufferInfo(Handle, &q);
-    std::cout << q.dwSize.X<<std::endl<<screen_width;*/
     
     Settings* settings = new Settings();
     Game *g = new Game(settings);

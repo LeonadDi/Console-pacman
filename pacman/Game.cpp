@@ -17,22 +17,23 @@ Game::Game(Settings* settings)
 
 void Game::gameLoop()
 {
-	while (1) {
-
+	const bool gameRunning = 1;
+	while (gameRunning) {
 		levelSplashScreen();
 		while (stats->dotsCollected < 246 && !stats->gotHit) {
+			const int refreshRate = 1000 / 60;
 			update();
 			render();
-			Sleep(1000 / 60);
+			Sleep(refreshRate);
 		}
-		
+
 		if (!stats->gotHit)
 		{
-			levelFinishedScreen();			
+			levelFinishedScreen();
 			resetAfterLevelUp();
 		}
 		else {
-			if (stats->health <=0)
+			if (stats->health <= 0)
 			{
 				loseSplashScreen();
 				break;
@@ -40,8 +41,10 @@ void Game::gameLoop()
 			gotHitSplashScreen();
 			resetAfterDeath();
 		}
+		
 	}
 }
+
 
 void Game::update()
 {
@@ -64,67 +67,113 @@ void Game::update()
 
 void Game::render()
 {
-	wchar_t rqre[screen_width * screen_height];
-	wchar_t* screen = rqre;
+	wchar_t screenHolder[screen_width * screen_height];
+	wchar_t* screen = screenHolder;
 	for (int i = 0; i < screen_width * screen_height; i++) screen[i] = L' ';
-	
-	screen[0] = 'X'; screen[screen_width * screen_height-1] = 'X';
+
+	//vvv
+	WORD screenHolder1[screen_width * screen_height];
+	WORD* screen1 = screenHolder1;
+	for (int i = 0; i < screen_width * screen_height; i++) screen1[i] = 0;
+	//^^^
+
+	screen[0] = 'X'; screen[screen_width * screen_height - 1] = 'X';
 
 
 	//prepare world (map, coins)
 	char* q = world->getMapForRender();
+	WORD* e = world->getMapColor();
 
 	//prepare @
 	q[player->position[0] + (player->position[1] * map_width)] = player->getCurrentSprite();
+	e[player->position[0] + (player->position[1] * map_width)] = player->getColor();
 	//prepare enemies
 	q[ghost1->position[0] + (ghost1->position[1] * map_width)] = ghost1->getCurrentSprite();
+	e[ghost1->position[0] + (ghost1->position[1] * map_width)] = ghost1->getColor();
 	q[ghost2->position[0] + (ghost2->position[1] * map_width)] = ghost2->getCurrentSprite();
+	e[ghost2->position[0] + (ghost2->position[1] * map_width)] = ghost2->getColor();
 	q[ghost3->position[0] + (ghost3->position[1] * map_width)] = ghost3->getCurrentSprite();
+	e[ghost3->position[0] + (ghost3->position[1] * map_width)] = ghost3->getColor();
 	q[ghost4->position[0] + (ghost4->position[1] * map_width)] = ghost4->getCurrentSprite();
+	e[ghost4->position[0] + (ghost4->position[1] * map_width)] = ghost4->getColor();
 	//print map on to screen
 	for (int i = 0; i < map_height; i++)
 	{
 		for (int j = 0; j < map_width; j++)
 		{
-			screen[(screen_width * (i + 5)) + j + 5] = q[i * map_width + j];
+			const int xOffset = 5;
+			const int yOffset = 5;
+			screen[(screen_width * (i + yOffset)) + j + xOffset] = q[i * map_width + j];
+		}
+	}
+	for (int i = 0; i < map_height; i++)
+	{
+		for (int j = 0; j < map_width; j++)
+		{
+			const int xOffset = 5;
+			const int yOffset = 5;
+			screen1[(screen_width * (i + yOffset)) + j + xOffset] = e[i * map_width + j];
 		}
 	}
 	//prepare stats
-		
+
 		//level
 	char level[6] = {};
 	sprintf_s(level, "%d", stats->level);
 	char levelF[14] = { "Level: " };
-	for (int i = 0; i < 6; i++)
-		screen[34 + i + 5 * screen_width] = (char)levelF[i];
-	for (int i = 0; i < 6; i++)
-		screen[41 + i + 5 * screen_width] = (char)level[i];
+	for (int i = 0; i < 6; i++) {
+		const int xOffset = 34;
+		const int yOffset = 5;
+		screen[xOffset + i + yOffset * screen_width] = (char)levelF[i];
+	}
+	for (int i = 0; i < 6; i++){
+		const int xOffset = 41;
+		const int yOffset = 5;
+		screen[xOffset + i + yOffset * screen_width] = (char)level[i];
+	}
 
 		//score
 	char score[10] = {};
 	sprintf_s(score, "%d", stats->score);	
 	char scoreF[14] = { "Score: " };
-	for (int i = 0; i < 6; i++)
-		screen[34 + i + 7 * screen_width] = (char)scoreF[i];
-	for (int i = 0; i < 10; i++)
-		screen[41 + i + 7 * screen_width] = (char)score[i];
+	for (int i = 0; i < 6; i++) {
+		const int xOffset = 34;
+		const int yOffset = 7;
+		screen[xOffset + i + yOffset * screen_width] = (char)scoreF[i];
+	}
+	for (int i = 0; i < 10; i++) {
+		const int xOffset = 41;
+		const int yOffset = 7;
+		screen[xOffset + i + yOffset * screen_width] = (char)score[i];
+	}
 	
 	//health
 	char health[10] = {};
 	sprintf_s(health, "%d", stats->health);
 	char healthF[14] = { "Health:" };
-	for (int i = 0; i < 6; i++)
-		screen[34 + i + 9 * screen_width] = (char)healthF[i];
-	for (int i = 0; i < 10; i++)
-		screen[41 + i + 9 * screen_width] = (char)health[i];
+	for (int i = 0; i < 6; i++) {
+		const int xOffset = 34;
+		const int yOffset = 9;
+		screen[xOffset + i + yOffset * screen_width] = (char)healthF[i];
+	}
+	for (int i = 0; i < 10; i++) {
+		const int xOffset = 41;
+		const int yOffset = 9;
+		screen[xOffset + i + yOffset * screen_width] = (char)health[i];
+	}
 
 
 	//buffer
     HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
     DWORD dwBytesWritten = 0;
-    WriteConsoleOutputCharacter(h, screen, screen_height*screen_width, { 0,0 }, &dwBytesWritten);
+    WriteConsoleOutputCharacter(h, screen, screen_height * screen_width, { 0,0 }, &dwBytesWritten);
 
+	//vvv
+	dwBytesWritten = 0;
+	WriteConsoleOutputAttribute(h, screen1, screen_height * screen_width, { 0,0 }, &dwBytesWritten);
+	//^^^
 	delete q;
+	delete e;
 }
 
 void Game::resetAfterDeath()

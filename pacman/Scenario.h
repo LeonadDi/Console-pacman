@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SCENARIO_H
+#define SCENARIO_H
 #include "Ghost.h"
 
 class Scenario
@@ -28,3 +29,4 @@ private:
 	void allScatter();
 };
 
+#endif

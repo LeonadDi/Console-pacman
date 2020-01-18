@@ -1,4 +1,5 @@
-#pragma once
+#ifndef CLYDEAI_H
+#define CLYDEAI_H
 #include "GhostAI.h"
 class ClydeAI :
 	public GhostAI
@@ -11,3 +12,4 @@ private:
 	void pursuit();
 };
 
+#endif

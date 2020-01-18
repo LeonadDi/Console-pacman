@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SETTINGS_H
+#define SETTINGS_H
 
 
 const int screen_width = 60;
@@ -14,3 +15,4 @@ public:
 
 };
 
+#endif

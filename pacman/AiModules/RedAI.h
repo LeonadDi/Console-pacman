@@ -1,6 +1,7 @@
-#pragma once
+#ifndef REDAI_H
+#define REDAI_H
 #include "GhostAI.h"
-#include "World.h"
+#include "..\World.h"
 class RedAI :
 	public GhostAI
 {
@@ -12,3 +13,4 @@ public:
 	
 };
 
+#endif

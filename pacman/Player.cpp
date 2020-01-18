@@ -4,17 +4,15 @@ Player::Player(World* world, bool visible, int x, int y, Stats* stats)
 	:MovableObject(world, visible, x, y)
 {
 	this->stats = stats;
-	ticksCooldown = 15;
+	ticksCooldown = 10;
 	cooldownCurrent = 0;
+	color = FOREGROUND_RED | FOREGROUND_GREEN;
 	sprite[0] = 'O';
 	sprite[1] = 'o';
 }
 
 void Player::update()
 {
-	//get input
-	//getControl();	//сделать из этого класс
-
 	if (cooldownCurrent >= ticksCooldown)
 	{
 		movement();
@@ -26,69 +24,93 @@ void Player::getControl()
 {
 	if (GetAsyncKeyState(LEFT_ARROW_KEY) || GetAsyncKeyState(A_KEY)) 
 	{ 
-		if (stats->pause)
-		{
-			stats->pause = false;
-		}
-		char q = world->getByCoords(position[0]-1, position[1]);
-		if (q != '1')
-		{
-			tryToMove = movement::left;
-		}
+		leftButtonInput();
 	}
 	if (GetAsyncKeyState(UP_ARROW_KEY) || GetAsyncKeyState(W_KEY))
 	{
-		if (stats->pause)
-		{
-			stats->pause = false;
-		}
-
-		char q = world->getByCoords(position[0], position[1]-1);
-		if (q!='1')
-		{
-			tryToMove = movement::up;
-		}
+		upButtonInput();
 	}
 	if (GetAsyncKeyState(RIGHT_ARROW_KEY) || GetAsyncKeyState(D_KEY))
 	{
-		if (stats->pause)
-		{
-			stats->pause = false;
-		}
-
-		char q = world->getByCoords(position[0]+1, position[1]);
-		
-		if (q != '1')
-		{
-			tryToMove = movement::right;
-		}
-		
+		rightButtonInput();		
 	}
 	if (GetAsyncKeyState(DOWN_ARROW_KEY) || GetAsyncKeyState(S_KEY)) 
 	{
-		if (stats->pause)
-		{
-			stats->pause = false;
-		}
-		char q = world->getByCoords(position[0], position[1]+1);
-		if (q != '1')
-		{
-			tryToMove = movement::down;
-		}
+		downButtonInput();
 	}
 	if (GetAsyncKeyState(SPACE_KEY))
 	{
-		if (stats->pause)
-		{
-			stats->pause = false;
-		}
-		else
-		{
-			stats->pause = true;
-		}
+		spaceButtonInput();
 	}
 }
 
+
+void Player::rightButtonInput()
+{
+	if (stats->pause)
+	{
+		stats->pause = false;
+	}
+
+	char q = world->getByCoords(position[0] + 1, position[1]);
+
+	if (q != '1')
+	{
+		tryToMove = movement::right;
+	}
+}
+
+void Player::leftButtonInput()
+{
+	if (stats->pause)
+	{
+		stats->pause = false;
+	}
+	char q = world->getByCoords(position[0] - 1, position[1]);
+	if (q != '1')
+	{
+		tryToMove = movement::left;
+	}
+}
+
+void Player::upButtonInput()
+{
+	if (stats->pause)
+	{
+		stats->pause = false;
+	}
+
+	char q = world->getByCoords(position[0], position[1] - 1);
+	if (q != '1')
+	{
+		tryToMove = movement::up;
+	}
+}
+
+void Player::downButtonInput()
+{
+	if (stats->pause)
+	{
+		stats->pause = false;
+	}
+	char q = world->getByCoords(position[0], position[1] + 1);
+	if (q != '1')
+	{
+		tryToMove = movement::down;
+	}
+}
+
+void Player::spaceButtonInput()
+{
+	if (stats->pause)
+	{
+		stats->pause = false;
+	}
+	else
+	{
+		stats->pause = true;
+	}
+}
 
 void Player::movement()
 {
@@ -197,17 +219,10 @@ void Player::moveDown(char* q)
 	}
 }
 
-/*void Player::checkForTunnel()
+WORD Player::getColor()
 {
-	if (position[0] == 0 && position[1]==14)
-	{
-		position[0] = 26;
-	}
-	if (position[0] == 27 && position[1] == 14)
-	{
-		position[0] = 1;
-	}
-}*/
+	return color;
+}
 
 char Player::getCurrentSprite() {
 	int e = stats->dotsCollected % 2;

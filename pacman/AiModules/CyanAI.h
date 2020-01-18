@@ -1,4 +1,5 @@
-#pragma once
+#ifndef CYAN_H
+#define CYAN_H
 #include "GhostAI.h"
 class CyanAI :
 	public GhostAI
@@ -11,3 +12,4 @@ private:
 	void pursuit();
 };
 
+#endif

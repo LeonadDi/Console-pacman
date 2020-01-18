@@ -1,4 +1,5 @@
-#pragma once
+#ifndef PINKAI_H
+#define PINKAI_H
 #include "GhostAI.h"
 class PinkAI :
 	public GhostAI
@@ -12,3 +13,4 @@ private:
 	void pursuit();
 };
 
+#endif

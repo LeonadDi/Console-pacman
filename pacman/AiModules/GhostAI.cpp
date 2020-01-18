@@ -13,40 +13,44 @@ void GhostAI::makeDecision()
 
 void GhostAI::navigateToTarget(int targetX, int targetY)
 {
+	const int bigNumber = 999;
 	char up = world->getByCoords(host->position[0], host->position[1] - 1);
 	char left = world->getByCoords(host->position[0] - 1, host->position[1]);
 	char right = world->getByCoords(host->position[0] + 1, host->position[1]);
 	char down = world->getByCoords(host->position[0], host->position[1] + 1);
-	double distance[4] = { 999,999,999,999 };
+	double distance[4] = { bigNumber, bigNumber, bigNumber, bigNumber };
+
+	const int power = 2;
+	const int offset = 1;
 	if (right != '1')
 	{
-		distance[0] = sqrt(pow(targetX - (host->position[0] + 1), 2) + pow(targetY - host->position[1], 2));
+		distance[0] = sqrt(pow(targetX - (host->position[0] + offset), power) + pow(targetY - host->position[1], power));
 	}
 	if (down != '1')
 	{
-		distance[1] = sqrt(pow(targetX - host->position[0], 2) + pow(targetY - (host->position[1] + 1), 2));
+		distance[1] = sqrt(pow(targetX - host->position[0], power) + pow(targetY - (host->position[1] + offset), power));
 	}
 	if (left != '1')
 	{
-		distance[2] = sqrt(pow(targetX - (host->position[0] - 1), 2) + pow(targetY - host->position[1], 2));
+		distance[2] = sqrt(pow(targetX - (host->position[0] - offset), power) + pow(targetY - host->position[1], power));
 	}
 	if (up != '1')
 	{
-		distance[3] = sqrt(pow(targetX - host->position[0], 2) + pow(targetY - (host->position[1] - 1), 2));
+		distance[3] = sqrt(pow(targetX - host->position[0], power) + pow(targetY - (host->position[1] - offset), power));
 	}
 	switch (host->lastPositionDirection)
 	{
 	case MovableObject::movement::right:
-		distance[0] = 999;
+		distance[0] = bigNumber;
 		break;
 	case MovableObject::movement::down:
-		distance[1] = 999;
+		distance[1] = bigNumber;
 		break;
 	case MovableObject::movement::left:
-		distance[2] = 999;
+		distance[2] = bigNumber;
 		break;
 	case MovableObject::movement::up:
-		distance[3] = 999;
+		distance[3] = bigNumber;
 		break;
 	default:
 		break;
@@ -90,27 +94,32 @@ void GhostAI::scatter()
 
 void GhostAI::fright()
 {
-	char up = world->getByCoords(host->position[0], host->position[1] - 1);
-	char left = world->getByCoords(host->position[0] - 1, host->position[1]);
-	char right = world->getByCoords(host->position[0] + 1, host->position[1]);
-	char down = world->getByCoords(host->position[0], host->position[1] + 1);
+	const int xOffset = 1;
+	const int yOffset = 1;
+	char up = world->getByCoords(host->position[0], host->position[1] - yOffset);
+	char left = world->getByCoords(host->position[0] - xOffset, host->position[1]);
+	char right = world->getByCoords(host->position[0] + xOffset, host->position[1]);
+	char down = world->getByCoords(host->position[0], host->position[1] + yOffset);
 
-	int points[4] = { rand() % 50, rand() % 50, rand() % 50, rand() % 50 };
+	const int divideBy = 50;
+	const int addPoints = 100;
+
+	int points[4] = { rand() % divideBy, rand() % divideBy, rand() % divideBy, rand() % divideBy };
 	if (right != '1')
 	{
-		points[0] += 100;
+		points[0] += addPoints;
 	}
 	if (down != '1')
 	{
-		points[1] += 100;
+		points[1] += addPoints;
 	}
 	if (left != '1')
 	{
-		points[2] += 100;
+		points[2] += addPoints;
 	}
 	if (up != '1')
 	{
-		points[3] += 100;
+		points[3] += addPoints;
 	}
 
 	switch (host->lastPositionDirection)
@@ -162,18 +171,21 @@ void GhostAI::fright()
 
 void GhostAI::eaten()
 {
-	if (host->position[0] == 14 && host->position[1] == 11)
+	const int xGhostHousePos = 14;
+	const int yGhostHousePos = 11;
+	if (host->position[0] == xGhostHousePos && host->position[1] == yGhostHousePos)
 	{
 		currentAi = AiMode::pursuit;
 	}
 	else
 	{
-		navigateToTarget(14, 11);
+		navigateToTarget(xGhostHousePos, yGhostHousePos);
 	}
 }
 
 double GhostAI::distanceToTarget(int currentX, int currentY, int targetX, int targetY)
 {
-	double distance = sqrt(pow(targetX - currentX , 2) + pow(targetY - currentY, 2));
+	const int power = 2;
+	double distance = sqrt(pow(targetX - currentX , power) + pow(targetY - currentY, power));
 	return distance;
 }

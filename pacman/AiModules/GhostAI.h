@@ -1,5 +1,7 @@
-#pragma once
-#include "MovableObject.h"
+#ifndef GHOSTAI_H
+#define GHOSTAI_H
+
+#include "..\MovableObject.h"
 
 class GhostAI
 {
@@ -34,3 +36,4 @@ protected:
 	double distanceToTarget(int currentX, int currentY, int targetX, int targetY);
 };
 
+#endif

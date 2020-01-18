@@ -1,11 +1,11 @@
-#pragma once
+#ifndef GAME_H
+#define GAME_H
 #include <iostream>
 #include <Windows.h>
 #include "World.h"
 #include "Settings.h"
 #include "Player.h"
 #include "Stats.h"
-//#include "Ghost.h"
 #include "CyanGhost.h"
 #include "Scenario.h"
 
@@ -21,10 +21,10 @@ private:
 	Settings* settings;
 	Scenario* scenario;
 	MovableObject* player;
-	MovableObject* ghost1; //заплатка
-	MovableObject* ghost2; //заплатка
-	MovableObject* ghost3; //заплатка
-	MovableObject* ghost4; //заплатка
+	MovableObject* ghost1; 
+	MovableObject* ghost2; 
+	MovableObject* ghost3; 
+	MovableObject* ghost4; 
 	
 	void update();
 	
@@ -37,3 +37,4 @@ private:
 	void levelFinishedScreen();
 };
 
+#endif

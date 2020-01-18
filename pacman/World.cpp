@@ -29,6 +29,30 @@ char* World::getMapForRender()
 	return name;
 }
 
+WORD* World::getMapColor()
+{
+	WORD* name = new WORD[map_height * map_width];
+	for (int i = 0; i < map_height * map_width; i++)
+	{
+		switch (map[i])
+		{
+		case '0':
+			name[i] = 0;
+			break;
+		case '1':
+			name[i] = BACKGROUND_BLUE | BACKGROUND_INTENSITY;
+			break;
+		case '2':
+			name[i] = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY;
+			break;
+		case '3':
+			name[i] = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY;
+			break;
+		}
+	}
+	return name;
+}
+
 void World::loadMap()
 {
 	map = new char[map_height*map_width+1]

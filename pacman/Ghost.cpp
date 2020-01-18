@@ -4,7 +4,7 @@ Ghost::Ghost(World* world, bool visible, int x, int y, Stats* stats, MovableObje
 	:MovableObject(world, visible, x, y)
 {
 	this->stats = stats;
-	ticksCooldown = 18;
+	ticksCooldown = 13;
 	cooldownCurrent = 0;
 	
 	
@@ -14,24 +14,25 @@ Ghost::Ghost(World* world, bool visible, int x, int y, Stats* stats, MovableObje
 	{
 	case 0:
 		ai = new RedAI(world, this, player);
+		color = FOREGROUND_RED;
 		sprite[0] = 'R';
 		sprite[1] = 'r';
 		break;
 	case 1:
 		ai = new PinkAI(world, this, player);
+		color = FOREGROUND_RED | FOREGROUND_INTENSITY;
 		sprite[0] = 'P';
 		sprite[1] = 'p';
 		break;
 	case 2:
 		ai = new ClydeAI(world, this, player);
+		color = FOREGROUND_RED | FOREGROUND_GREEN;
 		sprite[0] = 'K';
 		sprite[1] = 'k';
 		break;
 	default:
 		break;
 	}
-	
-
 }
 
 void Ghost::update()
@@ -202,6 +203,7 @@ void Ghost::moveDown(char* q)
 
 void Ghost::catchPlayer()
 {
+
 	if (position[0] == player->position[0] && position[1] == player->position[1])
 	{
 		if (ai->currentAi == GhostAI::AiMode::pursuit || 
@@ -219,6 +221,20 @@ void Ghost::catchPlayer()
 			frightTicks = 0;
 			stats->score += 200;
 		}
+	}
+}
+
+WORD Ghost::getColor()
+{
+	if (ai->currentAi == GhostAI::AiMode::pursuit || 
+		ai->currentAi == GhostAI::AiMode::scatter || 
+		ai->currentAi == GhostAI::AiMode::idle)
+	{
+		return color;
+	}
+	else
+	{
+		return FOREGROUND_BLUE;
 	}
 }
 
