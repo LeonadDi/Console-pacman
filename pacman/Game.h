@@ -4,10 +4,12 @@
 #include <Windows.h>
 #include "World.h"
 #include "Settings.h"
-#include "Player.h"
 #include "Stats.h"
-#include "CyanGhost.h"
 #include "Scenario.h"
+#include "GhostAbstractFactory/RedGhostFactory.h"
+#include "GhostAbstractFactory/PinkGhostFactory.h"
+#include "GhostAbstractFactory/KlydeGhostFactory.h"
+#include "GhostAbstractFactory/CyanGhostFactory.h"
 
 class Game
 {
@@ -20,11 +22,8 @@ private:
 	Stats* stats;
 	Settings* settings;
 	Scenario* scenario;
-	MovableObject* player;
-	MovableObject* ghost1; 
-	MovableObject* ghost2; 
-	MovableObject* ghost3; 
-	MovableObject* ghost4; 
+
+	MovableObject** actors;
 	
 	void update();
 	

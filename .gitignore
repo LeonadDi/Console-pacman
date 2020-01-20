@@ -6,6 +6,6 @@
 /pacman/Release
 /.vs
 /pacman.sln
-/Release/pacman.iobj
-/Release/pacman.ipdb
-/Release/pacman.pdb
+/bin/pacman.iobj
+/bin/pacman.ipdb
+/bin/pacman.pdb

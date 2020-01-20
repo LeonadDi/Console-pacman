@@ -38,6 +38,7 @@ void Scenario::reset()
 
 void Scenario::initialize()
 {
+	
 	redGhost->ai->currentAi = GhostAI::AiMode::scatter;
 	pinkGhost->ai->currentAi = GhostAI::AiMode::idle;
 	cyanGhost->ai->currentAi = GhostAI::AiMode::idle;
