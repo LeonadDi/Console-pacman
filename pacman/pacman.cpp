@@ -12,10 +12,10 @@ int main()
     _SMALL_RECT Rect;
     Rect.Top = 0;
     Rect.Left = 0;
-    Rect.Bottom = screen_height-1;
-    Rect.Right = screen_width-1;
+    Rect.Bottom = SCREEN_HEIGHT - 1;
+    Rect.Right = SCREEN_WIDTH - 1;
     SetConsoleWindowInfo(Handle, TRUE, &Rect);
-    SetConsoleScreenBufferSize(Handle, { screen_width, screen_height });
+    SetConsoleScreenBufferSize(Handle, { SCREEN_WIDTH, SCREEN_HEIGHT });
     
     Settings* settings = new Settings();
     Game *g = new Game(settings);

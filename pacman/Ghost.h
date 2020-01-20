@@ -11,16 +11,15 @@ class Ghost :
 {
 public:
 	Ghost(World* world, bool visible, int x, int y, Stats* stats, MovableObject* player, int AI);
-
-	
+		
 	MovableObject* player;
 	GhostAI* ai = 0;
 
 	void update();
 	char getCurrentSprite();
 private:
-	int frightTimer = 60 * 10;
-	int frightTicks = 0;
+	int _frightTimer = 60 * 10;
+	int _frightTicks = 0;
 	void getControl();
 	void setFright();
 	void updateFright();

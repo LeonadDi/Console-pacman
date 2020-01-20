@@ -22,7 +22,7 @@ private:
 	const char S_KEY = 0x53;
 	const char SPACE_KEY = 0x20;
 
-	movement tryToMove;
+	movement _tryToMove;
 
 	void rightButtonInput();
 	void leftButtonInput();

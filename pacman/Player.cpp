@@ -56,7 +56,7 @@ void Player::rightButtonInput()
 
 	if (q != '1')
 	{
-		tryToMove = movement::right;
+		_tryToMove = movement::right;
 	}
 }
 
@@ -69,7 +69,7 @@ void Player::leftButtonInput()
 	char q = world->getByCoords(position[0] - 1, position[1]);
 	if (q != '1')
 	{
-		tryToMove = movement::left;
+		_tryToMove = movement::left;
 	}
 }
 
@@ -83,7 +83,7 @@ void Player::upButtonInput()
 	char q = world->getByCoords(position[0], position[1] - 1);
 	if (q != '1')
 	{
-		tryToMove = movement::up;
+		_tryToMove = movement::up;
 	}
 }
 
@@ -96,7 +96,7 @@ void Player::downButtonInput()
 	char q = world->getByCoords(position[0], position[1] + 1);
 	if (q != '1')
 	{
-		tryToMove = movement::down;
+		_tryToMove = movement::down;
 	}
 }
 
@@ -115,7 +115,7 @@ void Player::spaceButtonInput()
 void Player::movement()
 {
 	char* q = 0;
-	switch (tryToMove)
+	switch (_tryToMove)
 	{
 	case movement::stop:
 		break;
@@ -157,7 +157,7 @@ void Player::eatDots(char *q)
 
 void Player::moveRight(char* q)
 {
-	q = &(world->map[(position[1] * map_width) + (position[0] + 1)]);
+	q = &(world->map[(position[1] * MAP_WIDTH) + (position[0] + 1)]);
 	if (*q == '1')
 	{
 		moveDirection = movement::stop;
@@ -173,7 +173,7 @@ void Player::moveRight(char* q)
 
 void Player::moveLeft(char* q)
 {
-	q = &(world->map[(position[1] * map_width) + (position[0] - 1)]);
+	q = &(world->map[(position[1] * MAP_WIDTH) + (position[0] - 1)]);
 	if (*q == '1')
 	{
 		moveDirection = movement::stop;
@@ -189,7 +189,7 @@ void Player::moveLeft(char* q)
 
 void Player::moveUp(char* q)
 {
-	q = &(world->map[((position[1] - 1) * map_width) + (position[0])]);
+	q = &(world->map[((position[1] - 1) * MAP_WIDTH) + (position[0])]);
 	if (*q == '1')
 	{
 		moveDirection = movement::stop;
@@ -205,7 +205,7 @@ void Player::moveUp(char* q)
 
 void Player::moveDown(char* q)
 {
-	q = &(world->map[((position[1] + 1) * map_width) + (position[0])]);
+	q = &(world->map[((position[1] + 1) * MAP_WIDTH) + (position[0])]);
 	if (*q == '1')
 	{
 		moveDirection = movement::stop;

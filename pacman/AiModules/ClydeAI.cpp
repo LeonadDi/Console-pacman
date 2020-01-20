@@ -4,7 +4,7 @@ ClydeAI::ClydeAI(World* world, MovableObject* ghost, MovableObject* target)
 	:GhostAI(world, ghost, target)
 {
 	scatterCoord[0] = 0;
-	scatterCoord[1] = map_height+1;
+	scatterCoord[1] = MAP_HEIGHT + 1;
 }
 
 void ClydeAI::makeDecision()

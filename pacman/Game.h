@@ -18,10 +18,10 @@ public:
 
 	void gameLoop();
 private:
-	World* world;
-	Stats* stats;
-	Settings* settings;
-	Scenario* scenario;
+	World* _world;
+	Stats* _stats;
+	Settings* _settings;
+	Scenario* _scenario;
 
 	MovableObject** actors;
 	

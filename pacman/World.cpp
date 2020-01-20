@@ -7,8 +7,8 @@ World::World()
 
 char* World::getMapForRender()
 {
-	char* name = new char[map_height * map_width];
-	for (int i = 0; i < map_height * map_width; i++)
+	char* name = new char[MAP_HEIGHT * MAP_WIDTH];
+	for (int i = 0; i < MAP_HEIGHT * MAP_WIDTH; i++)
 	{
 		switch (map[i])
 		{
@@ -31,8 +31,8 @@ char* World::getMapForRender()
 
 WORD* World::getMapColor()
 {
-	WORD* name = new WORD[map_height * map_width];
-	for (int i = 0; i < map_height * map_width; i++)
+	WORD* name = new WORD[MAP_HEIGHT * MAP_WIDTH];
+	for (int i = 0; i < MAP_HEIGHT * MAP_WIDTH; i++)
 	{
 		switch (map[i])
 		{
@@ -55,7 +55,7 @@ WORD* World::getMapColor()
 
 void World::loadMap()
 {
-	map = new char[map_height*map_width+1]
+	map = new char[MAP_HEIGHT * MAP_WIDTH +1]
 	{ 
 		"11111111111111""11111111111111"
 		"12222222222221""12222222222221"
@@ -93,7 +93,7 @@ void World::loadMap()
 
 char World::getByCoords(int x, int y)
 {
-	return map[x + y * map_width];	
+	return map[x + y * MAP_WIDTH];	
 }
 
 

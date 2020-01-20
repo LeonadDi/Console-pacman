@@ -61,10 +61,10 @@ void Ghost::setFright()
 
 void Ghost::updateFright()
 {
-	frightTicks += 1;
-	if (frightTicks>= frightTimer)
+	_frightTicks += 1;
+	if (_frightTicks>= _frightTimer)
 	{
-		frightTicks = 0;
+		_frightTicks = 0;
 		ai->currentAi = GhostAI::AiMode::pursuit;
 	}
 }
@@ -139,7 +139,7 @@ char Ghost::getCurrentSprite()
 
 void Ghost::moveRight(char* q)
 {
-	q = &(world->map[(position[1] * map_width) + (position[0] + 1)]);
+	q = &(world->map[(position[1] * MAP_WIDTH) + (position[0] + 1)]);
 	if (*q == '1')
 	{
 		moveDirection = movement::stop;
@@ -155,7 +155,7 @@ void Ghost::moveRight(char* q)
 
 void Ghost::moveLeft(char* q)
 {
-	q = &(world->map[(position[1] * map_width) + (position[0] - 1)]);
+	q = &(world->map[(position[1] * MAP_WIDTH) + (position[0] - 1)]);
 	if (*q == '1')
 	{
 		moveDirection = movement::stop;
@@ -171,7 +171,7 @@ void Ghost::moveLeft(char* q)
 
 void Ghost::moveUp(char* q)
 {
-	q = &(world->map[((position[1] - 1) * map_width) + (position[0])]);
+	q = &(world->map[((position[1] - 1) * MAP_WIDTH) + (position[0])]);
 	if (*q == '1')
 	{
 		moveDirection = movement::stop;
@@ -187,7 +187,7 @@ void Ghost::moveUp(char* q)
 
 void Ghost::moveDown(char* q)
 {
-	q = &(world->map[((position[1] + 1) * map_width) + (position[0])]);
+	q = &(world->map[((position[1] + 1) * MAP_WIDTH) + (position[0])]);
 	if (*q == '1')
 	{
 		moveDirection = movement::stop;
@@ -218,7 +218,7 @@ void Ghost::catchPlayer()
 		else if(ai->currentAi != GhostAI::AiMode::eaten)
 		{
 			ai->currentAi = GhostAI::AiMode::eaten;
-			frightTicks = 0;
+			_frightTicks = 0;
 			stats->score += 200;
 		}
 	}

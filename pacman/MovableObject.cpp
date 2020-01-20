@@ -32,19 +32,19 @@ void MovableObject::update()
 
 void MovableObject::checkForTunnel()
 {
-	const int firstTunnelY = 0;
-	const int firstTunnelXBegin = 14;
-	const int firstTunnelXEnd = 26;
-	const int secondTunnelY = 27;
-	const int secondTunnelXBegin = 14;
-	const int secondTunnelXEnd = 1;
-	if (position[0] == firstTunnelY && position[1] == firstTunnelXBegin)
+	const int FIRST_TUNNEL_Y = 0;
+	const int FIRST_TUNNEL_X_START = 14;
+	const int FIRST_TUNNEL_X_END = 26;
+	const int SECOND_TUNNEL_Y = 27;
+	const int SECOND_TUNNEL_X_START = 14;
+	const int SECOND_TUNNEL_X_END = 1;
+	if (position[0] == FIRST_TUNNEL_Y && position[1] == FIRST_TUNNEL_X_START)
 	{
-		position[0] = firstTunnelXEnd;
+		position[0] = FIRST_TUNNEL_X_END;
 	}
-	if (position[0] == secondTunnelY && position[1] == secondTunnelXBegin)
+	if (position[0] == SECOND_TUNNEL_Y && position[1] == SECOND_TUNNEL_X_START)
 	{
-		position[0] = secondTunnelXEnd;
+		position[0] = SECOND_TUNNEL_X_END;
 	}
 }
 

@@ -13,44 +13,44 @@ void GhostAI::makeDecision()
 
 void GhostAI::navigateToTarget(int targetX, int targetY)
 {
-	const int bigNumber = 999;
+	const int BIG_NUMBER = 999;
 	char up = world->getByCoords(host->position[0], host->position[1] - 1);
 	char left = world->getByCoords(host->position[0] - 1, host->position[1]);
 	char right = world->getByCoords(host->position[0] + 1, host->position[1]);
 	char down = world->getByCoords(host->position[0], host->position[1] + 1);
-	double distance[4] = { bigNumber, bigNumber, bigNumber, bigNumber };
+	double distance[4] = { BIG_NUMBER, BIG_NUMBER, BIG_NUMBER, BIG_NUMBER };
 
-	const int power = 2;
-	const int offset = 1;
+	const int POWER = 2;
+	const int OFFSET = 1;
 	if (right != '1')
 	{
-		distance[0] = sqrt(pow(targetX - (host->position[0] + offset), power) + pow(targetY - host->position[1], power));
+		distance[0] = sqrt(pow(targetX - (host->position[0] + OFFSET), POWER) + pow(targetY - host->position[1], POWER));
 	}
 	if (down != '1')
 	{
-		distance[1] = sqrt(pow(targetX - host->position[0], power) + pow(targetY - (host->position[1] + offset), power));
+		distance[1] = sqrt(pow(targetX - host->position[0], POWER) + pow(targetY - (host->position[1] + OFFSET), POWER));
 	}
 	if (left != '1')
 	{
-		distance[2] = sqrt(pow(targetX - (host->position[0] - offset), power) + pow(targetY - host->position[1], power));
+		distance[2] = sqrt(pow(targetX - (host->position[0] - OFFSET), POWER) + pow(targetY - host->position[1], POWER));
 	}
 	if (up != '1')
 	{
-		distance[3] = sqrt(pow(targetX - host->position[0], power) + pow(targetY - (host->position[1] - offset), power));
+		distance[3] = sqrt(pow(targetX - host->position[0], POWER) + pow(targetY - (host->position[1] - OFFSET), POWER));
 	}
 	switch (host->lastPositionDirection)
 	{
 	case MovableObject::movement::right:
-		distance[0] = bigNumber;
+		distance[0] = BIG_NUMBER;
 		break;
 	case MovableObject::movement::down:
-		distance[1] = bigNumber;
+		distance[1] = BIG_NUMBER;
 		break;
 	case MovableObject::movement::left:
-		distance[2] = bigNumber;
+		distance[2] = BIG_NUMBER;
 		break;
 	case MovableObject::movement::up:
-		distance[3] = bigNumber;
+		distance[3] = BIG_NUMBER;
 		break;
 	default:
 		break;
@@ -94,32 +94,32 @@ void GhostAI::scatter()
 
 void GhostAI::fright()
 {
-	const int xOffset = 1;
-	const int yOffset = 1;
-	char up = world->getByCoords(host->position[0], host->position[1] - yOffset);
-	char left = world->getByCoords(host->position[0] - xOffset, host->position[1]);
-	char right = world->getByCoords(host->position[0] + xOffset, host->position[1]);
-	char down = world->getByCoords(host->position[0], host->position[1] + yOffset);
+	const int OFFSET_X = 1;
+	const int OFFSET_Y = 1;
+	char up = world->getByCoords(host->position[0], host->position[1] - OFFSET_Y);
+	char left = world->getByCoords(host->position[0] - OFFSET_X, host->position[1]);
+	char right = world->getByCoords(host->position[0] + OFFSET_X, host->position[1]);
+	char down = world->getByCoords(host->position[0], host->position[1] + OFFSET_Y);
 
-	const int divideBy = 50;
-	const int addPoints = 100;
+	const int DIVIDE_BY = 50;
+	const int ADD_POINTS = 100;
 
-	int points[4] = { rand() % divideBy, rand() % divideBy, rand() % divideBy, rand() % divideBy };
+	int points[4] = { rand() % DIVIDE_BY, rand() % DIVIDE_BY, rand() % DIVIDE_BY, rand() % DIVIDE_BY };
 	if (right != '1')
 	{
-		points[0] += addPoints;
+		points[0] += ADD_POINTS;
 	}
 	if (down != '1')
 	{
-		points[1] += addPoints;
+		points[1] += ADD_POINTS;
 	}
 	if (left != '1')
 	{
-		points[2] += addPoints;
+		points[2] += ADD_POINTS;
 	}
 	if (up != '1')
 	{
-		points[3] += addPoints;
+		points[3] += ADD_POINTS;
 	}
 
 	switch (host->lastPositionDirection)
@@ -171,21 +171,21 @@ void GhostAI::fright()
 
 void GhostAI::eaten()
 {
-	const int xGhostHousePos = 14;
-	const int yGhostHousePos = 11;
-	if (host->position[0] == xGhostHousePos && host->position[1] == yGhostHousePos)
+	const int GHOST_HOUSE_X = 14;
+	const int GHOST_HOUSE_Y = 11;
+	if (host->position[0] == GHOST_HOUSE_X && host->position[1] == GHOST_HOUSE_Y)
 	{
 		currentAi = AiMode::pursuit;
 	}
 	else
 	{
-		navigateToTarget(xGhostHousePos, yGhostHousePos);
+		navigateToTarget(GHOST_HOUSE_X, GHOST_HOUSE_Y);
 	}
 }
 
 double GhostAI::distanceToTarget(int currentX, int currentY, int targetX, int targetY)
 {
-	const int power = 2;
-	double distance = sqrt(pow(targetX - currentX , power) + pow(targetY - currentY, power));
+	const int POWER = 2;
+	double distance = sqrt(pow(targetX - currentX , POWER) + pow(targetY - currentY, POWER));
 	return distance;
 }

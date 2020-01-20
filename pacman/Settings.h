@@ -2,17 +2,16 @@
 #define SETTINGS_H
 
 
-const int screen_width = 60;
-const int screen_height = 40;
+const int SCREEN_WIDTH = 60;
+const int SCREEN_HEIGHT = 40;
 
-const int map_width = 28;//60;
-const int map_height = 31;//30;
+const int MAP_WIDTH = 28;
+const int MAP_HEIGHT = 31;
 
 class Settings
 {
 public:
 	Settings();
-
 };
 
 #endif

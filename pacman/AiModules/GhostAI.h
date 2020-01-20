@@ -27,7 +27,7 @@ protected:
 
 	MovableObject *host = 0;
 	MovableObject *target = 0;
-	World* world = 0;
+	World *world = 0;
 
 	void navigateToTarget(int targetX, int targetY);
 	void scatter();

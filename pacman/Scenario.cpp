@@ -10,30 +10,30 @@ Scenario::Scenario(MovableObject* redGhost, MovableObject* pinkGhost, MovableObj
 
 void Scenario::update()
 {
-	const int second = 60;
-	if (timer == 0)
+	const int SECOND = 60;
+	if (_timer == 0)
 	{
 		initialize();
 	}
-	if (timer == second *2)
+	if (_timer == SECOND *2)
 	{
 		freePink();
 	}
-	if (timer == second *8)
+	if (_timer == SECOND *8)
 	{
 		freeCyan();
 	}
-	if (timer == second *10)
+	if (_timer == SECOND *10)
 	{
 		freeOrange();
 		allPursuit();
 	}
-	timer += 1;
+	_timer += 1;
 }
 
 void Scenario::reset()
 {
-	timer = 0;
+	_timer = 0;
 }
 
 void Scenario::initialize()

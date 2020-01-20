@@ -17,7 +17,7 @@ public:
 
 	void reset();
 private:
-	int timer = 0;
+	int _timer = 0;
 	
 	void initialize();
 

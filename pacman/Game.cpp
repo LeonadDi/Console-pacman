@@ -3,60 +3,52 @@
 
 Game::Game(Settings* settings)
 {
-	this->settings = settings;
-	world = new World();
-	stats = new Stats();
-	//v поинтер, пока что обычный
-
-	/*player = new Player(world, true,13,23, stats);
-	ghost1 = new Ghost(world, true, 13, 11, stats, player, 0);
-	ghost2 = new Ghost(world, true, 14, 14, stats, player, 1);
-	ghost3 = new Ghost(world, true, 13, 14, stats, player, 2);
-	ghost4 = new CyanGhost(world, true, 15, 14, stats, player, ghost1);*/
-
-
+	_settings = settings;
+	_world = new World();
+	_stats = new Stats();
+	
 	actors = new MovableObject * [5]{};	
-	actors[0] = new Player(world, true, 13, 23, stats);
+	actors[0] = new Player(_world, true, 13, 23, _stats);
 
-	GhostFactory *factory = new RedGhostFactory(world, stats, actors[0], 0);
+	GhostFactory *factory = new RedGhostFactory(_world, _stats, actors[0], 0);
 	actors[1] = factory->createGhost(); 
 	delete factory;
 
-	factory = new PinkGhostFactory(world, stats, actors[0], 0);
+	factory = new PinkGhostFactory(_world, _stats, actors[0], 0);
 	actors[2] = factory->createGhost(); 
 	delete factory;
 
-	factory = new KlydeGhostFactory(world, stats, actors[0], 0);
+	factory = new KlydeGhostFactory(_world, _stats, actors[0], 0);
 	actors[3] = factory->createGhost();	
 	delete factory;
 
-	factory = new CyanGhostFactory(world, stats, actors[0], actors[1]);
+	factory = new CyanGhostFactory(_world, _stats, actors[0], actors[1]);
 	actors[4] = factory->createGhost();	
 	delete factory;
 
-	scenario = new Scenario(actors[1], actors[2], actors[3], actors[4]);
+	_scenario = new Scenario(actors[1], actors[2], actors[3], actors[4]);
 
 }
 
 void Game::gameLoop()
 {
-	const bool gameRunning = true;
-	while (gameRunning) {
+	const bool isRunning = true;
+	while (isRunning) {
 		levelSplashScreen();
-		while (stats->dotsCollected < 246 && !stats->gotHit) {
-			const int refreshRate = 1000 / 60;
+		while (_stats->dotsCollected < 246 && !_stats->gotHit) {
+			const int REFRESH_RATE = 1000 / 60;
 			update();
 			render();
-			Sleep(refreshRate);
+			Sleep(REFRESH_RATE);
 		}
 
-		if (!stats->gotHit)
+		if (!_stats->gotHit)
 		{
 			levelFinishedScreen();
 			resetAfterLevelUp();
 		}
 		else {
-			if (stats->health <= 0)
+			if (_stats->health <= 0)
 			{
 				loseSplashScreen();
 				break;
@@ -72,152 +64,125 @@ void Game::gameLoop()
 void Game::update()
 {
 	actors[0]->getControl();
-	//player->getControl();
-	if (!stats->pause)
+	if (!_stats->pause)
 	{
-		//player->update();
-
-		scenario->update();
+		_scenario->update();
 		for (int i = 0; i < 5; i++)
 		{
 			actors[i]->update();
 		}
 
-		//actors[0]->update();
-		/*ghost1->update();
-		ghost2->update();
-		ghost3->update();
-		ghost4->update();*/
-
-		if (stats->fright)
+		if (_stats->fright)
 		{
-			stats->fright = false;
+			_stats->fright = false;
 		}
 	}
 }
 
 void Game::render()
 {
-	wchar_t screenHolder[screen_width * screen_height];
+	wchar_t screenHolder[SCREEN_WIDTH * SCREEN_HEIGHT];
 	wchar_t* screen = screenHolder;
-	for (int i = 0; i < screen_width * screen_height; i++) screen[i] = L' ';
+	for (int i = 0; i < SCREEN_WIDTH * SCREEN_HEIGHT; i++) screen[i] = L' ';
 
-	//vvv
-	WORD screenHolder1[screen_width * screen_height];
+	WORD screenHolder1[SCREEN_WIDTH * SCREEN_HEIGHT];
 	WORD* screen1 = screenHolder1;
-	for (int i = 0; i < screen_width * screen_height; i++) screen1[i] = 0;
+	for (int i = 0; i < SCREEN_WIDTH * SCREEN_HEIGHT; i++) screen1[i] = 0;
 
-	//^^^
-
-	screen[0] = 'X'; screen[screen_width * screen_height - 1] = 'X';
+	screen[0] = 'X'; screen[SCREEN_WIDTH * SCREEN_HEIGHT - 1] = 'X';
 
 
 	//prepare world (map, coins)
-	char* q = world->getMapForRender();
-	WORD* e = world->getMapColor();
-
-	/*//prepare @
-	q[player->position[0] + (player->position[1] * map_width)] = player->getCurrentSprite();
-	e[player->position[0] + (player->position[1] * map_width)] = player->getColor();
-	//prepare enemies
-	q[ghost1->position[0] + (ghost1->position[1] * map_width)] = ghost1->getCurrentSprite();
-	e[ghost1->position[0] + (ghost1->position[1] * map_width)] = ghost1->getColor();
-	q[ghost2->position[0] + (ghost2->position[1] * map_width)] = ghost2->getCurrentSprite();
-	e[ghost2->position[0] + (ghost2->position[1] * map_width)] = ghost2->getColor();
-	q[ghost3->position[0] + (ghost3->position[1] * map_width)] = ghost3->getCurrentSprite();
-	e[ghost3->position[0] + (ghost3->position[1] * map_width)] = ghost3->getColor();
-	q[ghost4->position[0] + (ghost4->position[1] * map_width)] = ghost4->getCurrentSprite();
-	e[ghost4->position[0] + (ghost4->position[1] * map_width)] = ghost4->getColor();
-	*/
+	char* q = _world->getMapForRender();
+	WORD* e = _world->getMapColor();
 
 	for (int i = 0; i < 5; i++)
 	{
-		q[actors[i]->position[0] + (actors[i]->position[1] * map_width)] = actors[i]->getCurrentSprite();
-		e[actors[i]->position[0] + (actors[i]->position[1] * map_width)] = actors[i]->getColor();
+		q[actors[i]->position[0] + (actors[i]->position[1] * MAP_WIDTH)] = actors[i]->getCurrentSprite();
+		e[actors[i]->position[0] + (actors[i]->position[1] * MAP_WIDTH)] = actors[i]->getColor();
 	}
 
 	//print map on to screen
-	for (int i = 0; i < map_height; i++)
+	for (int i = 0; i < MAP_HEIGHT; i++)
 	{
-		for (int j = 0; j < map_width; j++)
+		for (int j = 0; j < MAP_WIDTH; j++)
 		{
-			const int xOffset = 5;
-			const int yOffset = 5;
-			screen[(screen_width * (i + yOffset)) + j + xOffset] = q[i * map_width + j];
-			screen1[(screen_width * (i + yOffset)) + j + xOffset] = e[i * map_width + j];
+			const int OFFSET_X = 5;
+			const int OFFSET_Y = 5;
+			screen[(SCREEN_WIDTH * (i + OFFSET_Y)) + j + OFFSET_X] = q[i * MAP_WIDTH + j];
+			screen1[(SCREEN_WIDTH * (i + OFFSET_Y)) + j + OFFSET_X] = e[i * MAP_WIDTH + j];
 		}
 	}
 	//prepare stats
 
 		//level
 	char level[6] = {};
-	sprintf_s(level, "%d", stats->level);
+	sprintf_s(level, "%d", _stats->level);
 	char levelF[14] = { "Level: " };
 	for (int i = 0; i < 6; i++) {
-		const int xOffset = 34;
-		const int yOffset = 5;
-		screen[xOffset + i + yOffset * screen_width] = (char)levelF[i];
-		screen1[xOffset + i + yOffset * screen_width] = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED;
+		const int OFFSET_X = 34;
+		const int OFFSET_Y = 5;
+		screen[OFFSET_X + i + OFFSET_Y * SCREEN_WIDTH] = (char)levelF[i];
+		screen1[OFFSET_X + i + OFFSET_Y * SCREEN_WIDTH] = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED;
 
 	}
 	for (int i = 0; i < 6; i++){
-		const int xOffset = 41;
-		const int yOffset = 5;
-		screen[xOffset + i + yOffset * screen_width] = (char)level[i];
-		screen1[xOffset + i + yOffset * screen_width] = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED;
+		const int OFFSET_X = 41;
+		const int OFFSET_Y = 5;
+		screen[OFFSET_X + i + OFFSET_Y * SCREEN_WIDTH] = (char)level[i];
+		screen1[OFFSET_X + i + OFFSET_Y * SCREEN_WIDTH] = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED;
 	}
 
 		//score
 	char score[10] = {};
-	sprintf_s(score, "%d", stats->score);	
+	sprintf_s(score, "%d", _stats->score);
 	char scoreF[14] = { "Score: " };
 	for (int i = 0; i < 6; i++) {
-		const int xOffset = 34;
-		const int yOffset = 7;
-		screen[xOffset + i + yOffset * screen_width] = (char)scoreF[i];
-		screen1[xOffset + i + yOffset * screen_width] = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED;
+		const int OFFSET_X = 34;
+		const int OFFSET_Y = 7;
+		screen[OFFSET_X + i + OFFSET_Y * SCREEN_WIDTH] = (char)scoreF[i];
+		screen1[OFFSET_X + i + OFFSET_Y * SCREEN_WIDTH] = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED;
 	}
 	for (int i = 0; i < 10; i++) {
-		const int xOffset = 41;
-		const int yOffset = 7;
-		screen[xOffset + i + yOffset * screen_width] = (char)score[i];
-		screen1[xOffset + i + yOffset * screen_width] = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED;
+		const int OFFSET_X = 41;
+		const int OFFSET_Y = 7;
+		screen[OFFSET_X + i + OFFSET_Y * SCREEN_WIDTH] = (char)score[i];
+		screen1[OFFSET_X + i + OFFSET_Y * SCREEN_WIDTH] = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED;
 	}
 	
 	//health
 	char health[10] = {};
-	sprintf_s(health, "%d", stats->health);
+	sprintf_s(health, "%d", _stats->health);
 	char healthF[14] = { "Health:" };
 	for (int i = 0; i < 6; i++) {
-		const int xOffset = 34;
-		const int yOffset = 9;
-		screen[xOffset + i + yOffset * screen_width] = (char)healthF[i];
-		screen1[xOffset + i + yOffset * screen_width] = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED;
+		const int OFFSET_X = 34;
+		const int OFFSET_Y = 9;
+		screen[OFFSET_X + i + OFFSET_Y * SCREEN_WIDTH] = (char)healthF[i];
+		screen1[OFFSET_X + i + OFFSET_Y * SCREEN_WIDTH] = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED;
 	}
 	for (int i = 0; i < 10; i++) {
-		const int xOffset = 41;
-		const int yOffset = 9;
-		screen[xOffset + i + yOffset * screen_width] = (char)health[i];
-		screen1[xOffset + i + yOffset * screen_width] = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED;
+		const int OFFSET_X = 41;
+		const int OFFSET_Y = 9;
+		screen[OFFSET_X + i + OFFSET_Y * SCREEN_WIDTH] = (char)health[i];
+		screen1[OFFSET_X + i + OFFSET_Y * SCREEN_WIDTH] = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED;
 	}
 
 
 	//buffer
     HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
     DWORD dwBytesWritten = 0;
-    WriteConsoleOutputCharacter(h, screen, screen_height * screen_width, { 0,0 }, &dwBytesWritten);
+    WriteConsoleOutputCharacter(h, screen, SCREEN_HEIGHT * SCREEN_WIDTH, { 0,0 }, &dwBytesWritten);
 
-	//vvv
 	dwBytesWritten = 0;
-	WriteConsoleOutputAttribute(h, screen1, screen_height * screen_width, { 0,0 }, &dwBytesWritten);
-	//^^^
+	WriteConsoleOutputAttribute(h, screen1, SCREEN_HEIGHT * SCREEN_WIDTH, { 0,0 }, &dwBytesWritten);
+
 	delete q;
 	delete e;
 }
 
 void Game::resetAfterDeath()
 {
-	stats->gotHit = false;
+	_stats->gotHit = false;
 
 		//	|
 		//	| rework later
@@ -233,16 +198,16 @@ void Game::resetAfterDeath()
 	actors[3]->position[1] = 14;
 	actors[4]->position[0] = 15;
 	actors[4]->position[1] = 14;
-	scenario->reset();
-	stats->pause = true;
+	_scenario->reset();
+	_stats->pause = true;
 	actors[0]->moveDirection = MovableObject::movement::stop;
 }
 
 void Game::resetAfterLevelUp()
 {
-	stats->level++;
-	stats->dotsCollected = 0;
-	world->loadMap();
+	_stats->level++;
+	_stats->dotsCollected = 0;
+	_world->loadMap();
 	actors[0]->position[0] = 13;
 	actors[0]->position[1] = 23;
 	actors[1]->position[0] = 13;
@@ -253,33 +218,33 @@ void Game::resetAfterLevelUp()
 	actors[3]->position[1] = 14;
 	actors[4]->position[0] = 15;
 	actors[4]->position[1] = 14;
-	scenario->reset();
-	stats->pause = true;
+	_scenario->reset();
+	_stats->pause = true;
 	actors[0]->moveDirection = MovableObject::movement::stop;
 }
 
 void Game::levelSplashScreen()
 {
-	wchar_t rqre[screen_width * screen_height];
-	wchar_t* screen = rqre;
+	wchar_t screenHolder[SCREEN_WIDTH * SCREEN_HEIGHT];
+	wchar_t* screen = screenHolder;
 
-	for (int i = 0; i < screen_width * screen_height; i++) screen[i] = L' ';
+	for (int i = 0; i < SCREEN_WIDTH * SCREEN_HEIGHT; i++) screen[i] = L' ';
 
-	WORD screenHolder1[screen_width * screen_height];
+	WORD screenHolder1[SCREEN_WIDTH * SCREEN_HEIGHT];
 	WORD* screen1 = screenHolder1;
-	for (int i = 0; i < screen_width * screen_height; i++) screen1[i] = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED;
+	for (int i = 0; i < SCREEN_WIDTH * SCREEN_HEIGHT; i++) screen1[i] = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED;
 
 	char level[6] = {};
-	sprintf_s(level, "%d", stats->level);
+	sprintf_s(level, "%d", _stats->level);
 	char levelF[14] = { "Level: " };
-	for (int i = 0; i < 6; i++) screen[14 + i + 18 * screen_width] = (char)levelF[i];
-	for (int i = 0; i < 6; i++) screen[21 + i + 18 * screen_width] = (char)level[i];
+	for (int i = 0; i < 6; i++) screen[14 + i + 18 * SCREEN_WIDTH] = (char)levelF[i];
+	for (int i = 0; i < 6; i++) screen[21 + i + 18 * SCREEN_WIDTH] = (char)level[i];
 	HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
 	DWORD dwBytesWritten = 0;
-	WriteConsoleOutputCharacter(h, screen, screen_height * screen_width, { 0,0 }, &dwBytesWritten);
+	WriteConsoleOutputCharacter(h, screen, SCREEN_HEIGHT * SCREEN_WIDTH, { 0,0 }, &dwBytesWritten);
 
 	dwBytesWritten = 0;
-	WriteConsoleOutputAttribute(h, screen1, screen_height * screen_width, { 0,0 }, &dwBytesWritten);
+	WriteConsoleOutputAttribute(h, screen1, SCREEN_HEIGHT * SCREEN_WIDTH, { 0,0 }, &dwBytesWritten);
 
 	Sleep(3000);
 }
@@ -287,46 +252,46 @@ void Game::levelSplashScreen()
 void Game::gotHitSplashScreen()
 {
 	Sleep(1000);
-	wchar_t rqre[screen_width * screen_height];
-	wchar_t* screen = rqre;
-	for (int i = 0; i < screen_width * screen_height; i++) screen[i] = L' ';
+	wchar_t screenHolder[SCREEN_WIDTH * SCREEN_HEIGHT];
+	wchar_t* screen = screenHolder;
+	for (int i = 0; i < SCREEN_WIDTH * SCREEN_HEIGHT; i++) screen[i] = L' ';
 
-	WORD screenHolder1[screen_width * screen_height];
+	WORD screenHolder1[SCREEN_WIDTH * SCREEN_HEIGHT];
 	WORD* screen1 = screenHolder1;
-	for (int i = 0; i < screen_width * screen_height; i++) screen1[i] = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED;
+	for (int i = 0; i < SCREEN_WIDTH * SCREEN_HEIGHT; i++) screen1[i] = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED;
 
 	char gotHitF[21] = { "You have been caught" };
-	for (int i = 0; i < 21; i++) screen[10 + i + 18 * screen_width] = (char)gotHitF[i];
+	for (int i = 0; i < 21; i++) screen[10 + i + 18 * SCREEN_WIDTH] = (char)gotHitF[i];
 
 	HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
 	DWORD dwBytesWritten = 0;
-	WriteConsoleOutputCharacter(h, screen, screen_height * screen_width, { 0,0 }, &dwBytesWritten);
+	WriteConsoleOutputCharacter(h, screen, SCREEN_HEIGHT * SCREEN_WIDTH, { 0,0 }, &dwBytesWritten);
 
 	dwBytesWritten = 0;
-	WriteConsoleOutputAttribute(h, screen1, screen_height * screen_width, { 0,0 }, &dwBytesWritten);
+	WriteConsoleOutputAttribute(h, screen1, SCREEN_HEIGHT * SCREEN_WIDTH, { 0,0 }, &dwBytesWritten);
 
 	Sleep(3000);
 }
 
 void Game::loseSplashScreen()
 {
-	wchar_t rqre[screen_width * screen_height];
-	wchar_t* screen = rqre;
-	for (int i = 0; i < screen_width * screen_height; i++) screen[i] = L' ';
+	wchar_t screenHolder[SCREEN_WIDTH * SCREEN_HEIGHT];
+	wchar_t* screen = screenHolder;
+	for (int i = 0; i < SCREEN_WIDTH * SCREEN_HEIGHT; i++) screen[i] = L' ';
 
-	WORD screenHolder1[screen_width * screen_height];
+	WORD screenHolder1[SCREEN_WIDTH * SCREEN_HEIGHT];
 	WORD* screen1 = screenHolder1;
-	for (int i = 0; i < screen_width * screen_height; i++) screen1[i] = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED;
+	for (int i = 0; i < SCREEN_WIDTH * SCREEN_HEIGHT; i++) screen1[i] = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED;
 
 	char gameOverF[10] = { "Game over" };
-	for (int i = 0; i < 10; i++) screen[10 + i + 18 * screen_width] = (char)gameOverF[i];
+	for (int i = 0; i < 10; i++) screen[10 + i + 18 * SCREEN_WIDTH] = (char)gameOverF[i];
 
 	HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
 	DWORD dwBytesWritten = 0;
-	WriteConsoleOutputCharacter(h, screen, screen_height * screen_width, { 0,0 }, &dwBytesWritten);
+	WriteConsoleOutputCharacter(h, screen, SCREEN_HEIGHT * SCREEN_WIDTH, { 0,0 }, &dwBytesWritten);
 
 	dwBytesWritten = 0;
-	WriteConsoleOutputAttribute(h, screen1, screen_height * screen_width, { 0,0 }, &dwBytesWritten);
+	WriteConsoleOutputAttribute(h, screen1, SCREEN_HEIGHT * SCREEN_WIDTH, { 0,0 }, &dwBytesWritten);
 
 	Sleep(3000);
 }
@@ -334,23 +299,23 @@ void Game::loseSplashScreen()
 void Game::levelFinishedScreen()
 {
 	Sleep(500);
-	wchar_t rqre[screen_width * screen_height];
-	wchar_t* screen = rqre;
-	for (int i = 0; i < screen_width * screen_height; i++) screen[i] = L' ';
+	wchar_t screenHolder[SCREEN_WIDTH * SCREEN_HEIGHT];
+	wchar_t* screen = screenHolder;
+	for (int i = 0; i < SCREEN_WIDTH * SCREEN_HEIGHT; i++) screen[i] = L' ';
 
-	WORD screenHolder1[screen_width * screen_height];
+	WORD screenHolder1[SCREEN_WIDTH * SCREEN_HEIGHT];
 	WORD* screen1 = screenHolder1;
-	for (int i = 0; i < screen_width * screen_height; i++) screen1[i] = FOREGROUND_BLUE|FOREGROUND_GREEN|FOREGROUND_RED;
+	for (int i = 0; i < SCREEN_WIDTH * SCREEN_HEIGHT; i++) screen1[i] = FOREGROUND_BLUE|FOREGROUND_GREEN|FOREGROUND_RED;
 
 	char levelF[15] = { "Level finished" };
-	for (int i = 0; i < 15; i++) screen[14 + i + 18 * screen_width] = (char)levelF[i];
+	for (int i = 0; i < 15; i++) screen[14 + i + 18 * SCREEN_WIDTH] = (char)levelF[i];
 	
 	HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
 	DWORD dwBytesWritten = 0;
-	WriteConsoleOutputCharacter(h, screen, screen_height * screen_width, { 0,0 }, &dwBytesWritten);
+	WriteConsoleOutputCharacter(h, screen, SCREEN_HEIGHT * SCREEN_WIDTH, { 0,0 }, &dwBytesWritten);
 
 	dwBytesWritten = 0;
-	WriteConsoleOutputAttribute(h, screen1, screen_height * screen_width, { 0,0 }, &dwBytesWritten);
+	WriteConsoleOutputAttribute(h, screen1, SCREEN_HEIGHT * SCREEN_WIDTH, { 0,0 }, &dwBytesWritten);
 
 	Sleep(3000);
 }

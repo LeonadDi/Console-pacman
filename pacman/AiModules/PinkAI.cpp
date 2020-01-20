@@ -35,28 +35,28 @@ void PinkAI::makeDecision()
 
 void PinkAI::pursuit()
 {
-	const int targetOffset = 4;
+	const int TARGET_OFFSET = 4;
 	switch (target->moveDirection)
 	{
 	case MovableObject::movement::down:
 		targetCoord[0] = target->position[0];
-		targetCoord[1] = target->position[1] + targetOffset;
+		targetCoord[1] = target->position[1] + TARGET_OFFSET;
 		break;
 	case MovableObject::movement::right:
-		targetCoord[0] = target->position[0] + targetOffset;
+		targetCoord[0] = target->position[0] + TARGET_OFFSET;
 		targetCoord[1] = target->position[1];
 		break;
 	case MovableObject::movement::left:
-		targetCoord[0] = target->position[0] - targetOffset;
+		targetCoord[0] = target->position[0] - TARGET_OFFSET;
 		targetCoord[1] = target->position[1];
 		break;
 	case MovableObject::movement::up:
-		targetCoord[0] = target->position[0] - targetOffset;
-		targetCoord[1] = target->position[1] - targetOffset;
+		targetCoord[0] = target->position[0] - TARGET_OFFSET;
+		targetCoord[1] = target->position[1] - TARGET_OFFSET;
 		break;
 	default:
-		targetCoord[0] = target->position[0] - targetOffset;
-		targetCoord[1] = target->position[1] - targetOffset;
+		targetCoord[0] = target->position[0] - TARGET_OFFSET;
+		targetCoord[1] = target->position[1] - TARGET_OFFSET;
 		break;
 	}
 	navigateToTarget(targetCoord[0], targetCoord[1]);
