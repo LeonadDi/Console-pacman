@@ -1,6 +1,6 @@
 #include "Player.h"
 
-Player::Player(World* world, bool visible, int x, int y, Stats* stats)
+Player::Player(std::shared_ptr<World> world, bool visible, int x, int y, std::shared_ptr<Stats> stats)
 	:MovableObject(world, visible, x, y)
 {
 	this->stats = stats;

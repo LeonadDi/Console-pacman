@@ -5,7 +5,7 @@ class ClydeAI :
 	public GhostAI
 {
 public:
-	ClydeAI(World* world, MovableObject* ghost, MovableObject* target);
+	ClydeAI(std::shared_ptr<World> world, MovableObject* ghost, MovableObject* target);
 
 	void makeDecision();
 private:

@@ -10,7 +10,7 @@ class RedGhostFactory :
 {
 public:
 
-	RedGhostFactory(World* world, Stats* stats, MovableObject* target, MovableObject* secondTarget);
+	RedGhostFactory(std::shared_ptr<World> world, std::shared_ptr<Stats> stats, MovableObject* target, MovableObject* secondTarget);
 
 	MovableObject* createGhost();
 };

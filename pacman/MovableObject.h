@@ -15,10 +15,10 @@ public:
 		left,
 		up
 	};
-	World* world;
+	std::shared_ptr<World> world;
 	char sprite[3] = {};
 	int position[2];
-	Stats* stats;
+	std::shared_ptr<Stats> stats;
 	movement lastPositionDirection;
 	bool visible;
 	int ticksCooldown = 0;
@@ -28,7 +28,7 @@ public:
 	
 
 
-	MovableObject(World* world, bool visible, int x, int y);
+	MovableObject(std::shared_ptr<World> world, bool visible, int x, int y);
 
 	virtual char getCurrentSprite();
 	virtual WORD getColor();

@@ -1,6 +1,6 @@
 #include "GhostFactory.h"
 
-GhostFactory::GhostFactory(World* world, Stats* stats, MovableObject* target, MovableObject* secondTarget)
+GhostFactory::GhostFactory(std::shared_ptr<World> world, std::shared_ptr<Stats> stats, MovableObject* target, MovableObject* secondTarget)
 {
 	_world = world;
 	_stats = stats;

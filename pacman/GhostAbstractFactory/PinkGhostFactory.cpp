@@ -1,6 +1,6 @@
 #include "PinkGhostFactory.h"
 
-PinkGhostFactory::PinkGhostFactory(World* world, Stats* stats, MovableObject* target, MovableObject* secondTarget)
+PinkGhostFactory::PinkGhostFactory(std::shared_ptr<World> world, std::shared_ptr<Stats> stats, MovableObject* target, MovableObject* secondTarget)
 	:GhostFactory(world, stats, target, secondTarget)
 {
 }

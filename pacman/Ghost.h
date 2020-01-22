@@ -10,10 +10,10 @@ class Ghost :
 	public MovableObject
 {
 public:
-	Ghost(World* world, bool visible, int x, int y, Stats* stats, MovableObject* player, int AI);
+	Ghost(std::shared_ptr<World> world, bool visible, int x, int y, std::shared_ptr<Stats> stats, MovableObject* player, int AI);
 		
 	MovableObject* player;
-	GhostAI* ai = 0;
+	std::unique_ptr<GhostAI> ai = 0;
 
 	void update();
 	char getCurrentSprite();

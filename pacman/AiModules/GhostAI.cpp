@@ -1,6 +1,6 @@
 #include "GhostAI.h"
 
-GhostAI::GhostAI(World* world, MovableObject* ghost, MovableObject* target)
+GhostAI::GhostAI(std::shared_ptr<World> world, MovableObject* ghost, MovableObject* target)
 {
 	host = ghost;
 	this->target = target;

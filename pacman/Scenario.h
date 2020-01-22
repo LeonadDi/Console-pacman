@@ -9,7 +9,7 @@ public:
 	Ghost* pinkGhost;
 	Ghost* cyanGhost;
 	Ghost* orangeGhost;
-	Stats* stats = 0;
+	std::shared_ptr<Stats> stats = 0;
 
 	Scenario(MovableObject* redGhost, MovableObject* pinkGhost, MovableObject* cyanGhost, MovableObject* orangeGhost);
 

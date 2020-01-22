@@ -1,6 +1,6 @@
 #include "KlydeGhostFactory.h"
 
-KlydeGhostFactory::KlydeGhostFactory(World* world, Stats* stats, MovableObject* target, MovableObject* secondTarget)
+KlydeGhostFactory::KlydeGhostFactory(std::shared_ptr<World> world, std::shared_ptr<Stats> stats, MovableObject* target, MovableObject* secondTarget)
 	:GhostFactory(world, stats, target, secondTarget)
 {
 }

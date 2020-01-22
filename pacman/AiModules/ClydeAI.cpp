@@ -1,6 +1,6 @@
 #include "ClydeAI.h"
 
-ClydeAI::ClydeAI(World* world, MovableObject* ghost, MovableObject* target)
+ClydeAI::ClydeAI(std::shared_ptr<World> world, MovableObject* ghost, MovableObject* target)
 	:GhostAI(world, ghost, target)
 {
 	scatterCoord[0] = 0;

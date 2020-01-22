@@ -6,7 +6,7 @@ class PinkGhostFactory :
 {
 public:
 
-	PinkGhostFactory(World* world, Stats* stats, MovableObject* target, MovableObject* secondTarget);
+	PinkGhostFactory(std::shared_ptr<World> world, std::shared_ptr<Stats> stats, MovableObject* target, MovableObject* secondTarget);
 
 	MovableObject* createGhost();
 };

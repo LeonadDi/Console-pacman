@@ -1,6 +1,6 @@
 #include "PinkAI.h"
 
-PinkAI::PinkAI(World* world, MovableObject* ghost, MovableObject* target)
+PinkAI::PinkAI(std::shared_ptr<World> world, MovableObject* ghost, MovableObject* target)
 	:GhostAI(world, ghost, target)
 {
 	scatterCoord[0] = 0;

@@ -1,6 +1,6 @@
 #include "MovableObject.h"
 
-MovableObject::MovableObject(World* world, bool visible, int x, int y)
+MovableObject::MovableObject(std::shared_ptr<World> world, bool visible, int x, int y)
 {
 	this->world = world;
 	this->position[0] = x;

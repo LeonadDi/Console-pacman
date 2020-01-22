@@ -1,6 +1,6 @@
 #include "CyanAI.h"
 
-CyanAI::CyanAI(World* world, MovableObject* ghost, MovableObject* target, MovableObject* target2)
+CyanAI::CyanAI(std::shared_ptr<World> world, MovableObject* ghost, MovableObject* target, MovableObject* target2)
 	:GhostAI(world, ghost, target)
 {
 	this->target2 = target2;

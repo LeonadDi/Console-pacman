@@ -5,7 +5,7 @@ class CyanAI :
 	public GhostAI
 {
 public:
-	CyanAI(World* world, MovableObject* ghost, MovableObject* target, MovableObject* target2);
+	CyanAI(std::shared_ptr<World> world, MovableObject* ghost, MovableObject* target, MovableObject* target2);
 	void makeDecision();
 private:
 	MovableObject* target2;

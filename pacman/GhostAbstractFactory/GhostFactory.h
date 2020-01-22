@@ -8,11 +8,11 @@
 class GhostFactory
 {
 public:
-	GhostFactory(World *world, Stats *stats, MovableObject* target, MovableObject* secondTarget);
+	GhostFactory(std::shared_ptr<World> world, std::shared_ptr<Stats>stats, MovableObject* target, MovableObject* secondTarget);
 	virtual MovableObject* createGhost()=0;
 protected:
-	World* _world;
-	Stats* _stats;
+	std::shared_ptr<World> _world;
+	std::shared_ptr<Stats> _stats;
 	MovableObject* _target;
 	MovableObject* _target2;
 

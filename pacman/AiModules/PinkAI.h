@@ -5,7 +5,7 @@ class PinkAI :
 	public GhostAI
 {
 public:
-	PinkAI(World* world, MovableObject* ghost, MovableObject* target);
+	PinkAI(std::shared_ptr<World> world, MovableObject* ghost, MovableObject* target);
 
 	void makeDecision();
 

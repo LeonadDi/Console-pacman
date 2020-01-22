@@ -2,7 +2,7 @@
 #include <cmath>
 
 
-RedAI::RedAI(World* world, MovableObject* ghost, MovableObject* target)
+RedAI::RedAI(std::shared_ptr<World> world, MovableObject* ghost, MovableObject* target)
 	:GhostAI(world, ghost, target)
 {
 	scatterCoord[0] = 28;

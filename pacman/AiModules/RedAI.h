@@ -6,7 +6,7 @@ class RedAI :
 	public GhostAI
 {
 public:
-	RedAI(World* world, MovableObject* ghost, MovableObject* target);
+	RedAI(std::shared_ptr<World> world, MovableObject* ghost, MovableObject* target);
 
 	void makeDecision();
 

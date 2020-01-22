@@ -1,6 +1,6 @@
 #include "Ghost.h"
 
-Ghost::Ghost(World* world, bool visible, int x, int y, Stats* stats, MovableObject* player, int AI)
+Ghost::Ghost(std::shared_ptr<World> world, bool visible, int x, int y, std::shared_ptr<Stats> stats, MovableObject* player, int AI)
 	:MovableObject(world, visible, x, y)
 {
 	this->stats = stats;
@@ -13,19 +13,19 @@ Ghost::Ghost(World* world, bool visible, int x, int y, Stats* stats, MovableObje
 	switch (AI)
 	{
 	case 0:
-		ai = new RedAI(world, this, player);
+		ai = std::unique_ptr<GhostAI>(new RedAI(world, this, player));
 		color = FOREGROUND_RED;
 		sprite[0] = 'R';
 		sprite[1] = 'r';
 		break;
 	case 1:
-		ai = new PinkAI(world, this, player);
+		ai = std::unique_ptr<GhostAI>(new PinkAI(world, this, player));
 		color = FOREGROUND_RED | FOREGROUND_INTENSITY;
 		sprite[0] = 'P';
 		sprite[1] = 'p';
 		break;
 	case 2:
-		ai = new ClydeAI(world, this, player);
+		ai = std::unique_ptr<GhostAI>(new ClydeAI(world, this, player));
 		color = FOREGROUND_RED | FOREGROUND_GREEN;
 		sprite[0] = 'K';
 		sprite[1] = 'k';

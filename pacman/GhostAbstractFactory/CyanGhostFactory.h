@@ -5,7 +5,7 @@ class CyanGhostFactory :
 	public GhostFactory
 {
 public:
-	CyanGhostFactory(World* world, Stats* stats, MovableObject* target, MovableObject* secondTarget);
+	CyanGhostFactory(std::shared_ptr<World> world, std::shared_ptr<Stats> stats, MovableObject* target, MovableObject* secondTarget);
 
 	MovableObject* createGhost();
 };

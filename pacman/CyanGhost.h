@@ -5,7 +5,7 @@ class CyanGhost :
 	public Ghost
 {
 public:
-	CyanGhost(World* world, bool visible, int x, int y, Stats* stats, MovableObject* player, MovableObject* redGhost);
+	CyanGhost(std::shared_ptr<World> world, bool visible, int x, int y, std::shared_ptr<Stats> stats, MovableObject* player, MovableObject* redGhost);
 };
 
 #endif

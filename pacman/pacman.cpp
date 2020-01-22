@@ -17,7 +17,7 @@ int main()
     SetConsoleWindowInfo(Handle, TRUE, &Rect);
     SetConsoleScreenBufferSize(Handle, { SCREEN_WIDTH, SCREEN_HEIGHT });
     
-    Settings* settings = new Settings();
+    std::shared_ptr<Settings> settings = std::shared_ptr<Settings>(new Settings());//new Settings();
     Game *g = new Game(settings);
     g->gameLoop();
 

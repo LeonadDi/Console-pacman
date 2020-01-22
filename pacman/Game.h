@@ -14,17 +14,18 @@
 class Game
 {
 public:
-	Game(Settings* settings);
+	Game(std::shared_ptr<Settings> settings);
 
 	void gameLoop();
 private:
-	World* _world;
-	Stats* _stats;
-	Settings* _settings;
-	Scenario* _scenario;
+	std::shared_ptr<World> _world;
+	std::shared_ptr<Stats> _stats;
+	std::shared_ptr<Settings> _settings;
+	std::shared_ptr<Scenario> _scenario;
 
 	MovableObject** actors;
 	
+		
 	void update();
 	
 	void render();

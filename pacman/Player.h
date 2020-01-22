@@ -6,7 +6,7 @@ class Player :
 	public MovableObject
 {
 public:
-	Player(World* world, bool visible, int x, int y, Stats* stats);
+	Player(std::shared_ptr<World> world, bool visible, int x, int y, std::shared_ptr<Stats> stats);
 
 	void update();
 	char getCurrentSprite();

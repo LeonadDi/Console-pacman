@@ -1,32 +1,32 @@
 #include "Game.h"
 
 
-Game::Game(Settings* settings)
+Game::Game(std::shared_ptr<Settings> settings)
 {
 	_settings = settings;
-	_world = new World();
-	_stats = new Stats();
+	_world = std::shared_ptr<World>(new World());
+	_stats = std::shared_ptr<Stats>(new Stats());
 	
 	actors = new MovableObject * [5]{};	
+	
+	
+
 	actors[0] = new Player(_world, true, 13, 23, _stats);
 
-	GhostFactory *factory = new RedGhostFactory(_world, _stats, actors[0], 0);
+	std::unique_ptr<GhostFactory> factory = std::unique_ptr<GhostFactory>(new RedGhostFactory(_world, _stats, actors[0], 0));
 	actors[1] = factory->createGhost(); 
-	delete factory;
-
-	factory = new PinkGhostFactory(_world, _stats, actors[0], 0);
+	
+	factory = std::unique_ptr<GhostFactory>(new PinkGhostFactory(_world, _stats, actors[0], 0));
 	actors[2] = factory->createGhost(); 
-	delete factory;
 
-	factory = new KlydeGhostFactory(_world, _stats, actors[0], 0);
+	factory = std::unique_ptr<GhostFactory>(new KlydeGhostFactory(_world, _stats, actors[0], 0));
 	actors[3] = factory->createGhost();	
-	delete factory;
 
-	factory = new CyanGhostFactory(_world, _stats, actors[0], actors[1]);
+	factory = std::unique_ptr<GhostFactory>(new CyanGhostFactory(_world, _stats, actors[0], actors[1]));
 	actors[4] = factory->createGhost();	
-	delete factory;
 
-	_scenario = new Scenario(actors[1], actors[2], actors[3], actors[4]);
+	_scenario = std::shared_ptr<Scenario>(new Scenario(actors[1], actors[2], actors[3], actors[4]));
+
 
 }
 
